@@ -14,28 +14,50 @@ class RepairsPage(tk.Frame):
         self.create_widgets()
 
     def create_widgets(self):
+        # Make this frame expand fully
+        self.pack(expand=True)
+
+        # Main centred container
+        container = tk.Frame(self)
+        container.pack(expand=True)
+
+        # Title
+        title = tk.Label(
+            container,
+            text="Maintenance Management",
+            font=("Arial", 22, "bold")
+        )
+        title.grid(row=0, column=0, columnspan=2, pady=(0, 20))
+
+        # Form frame (for inputs)
+        form = tk.Frame(container)
+        form.grid(row=1, column=0, columnspan=2)
+
         # --- Apartment ID ---
-        tk.Label(self, text="Apartment ID").grid(row=0, column=0, sticky="e")
-        self.apartment_entry = tk.Entry(self)
-        self.apartment_entry.grid(row=0, column=1)
+        tk.Label(form, text="Apartment ID").grid(row=0, column=0, sticky="e", padx=10, pady=5)
+        self.apartment_entry = tk.Entry(form, width=25)
+        self.apartment_entry.grid(row=0, column=1, pady=5)
 
         # --- Worker ID ---
-        tk.Label(self, text="Worker ID").grid(row=1, column=0, sticky="e")
-        self.worker_entry = tk.Entry(self)
-        self.worker_entry.grid(row=1, column=1)
+        tk.Label(form, text="Worker ID").grid(row=1, column=0, sticky="e", padx=10, pady=5)
+        self.worker_entry = tk.Entry(form, width=25)
+        self.worker_entry.grid(row=1, column=1, pady=5)
 
         # --- Maintenance Date ---
-        tk.Label(self, text="Maintenance Date (YYYY-MM-DD)").grid(row=2, column=0, sticky="e")
-        self.date_entry = tk.Entry(self)
-        self.date_entry.grid(row=2, column=1)
+        tk.Label(form, text="Maintenance Date (YYYY-MM-DD)").grid(row=2, column=0, sticky="e", padx=10, pady=5)
+        self.date_entry = tk.Entry(form, width=25)
+        self.date_entry.grid(row=2, column=1, pady=5)
 
-        # --- Buttons ---
-        tk.Button(self, text="Book Maintenance", command=self.book_maintenance).grid(row=3, column=0, columnspan=2, pady=5)
-        tk.Button(self, text="Record Resolution", command=self.record_resolution).grid(row=4, column=0, columnspan=2, pady=5)
-        tk.Button(self, text="Check Worker Availability", command=self.check_availability).grid(row=5, column=0, columnspan=2, pady=5)
-        tk.Button(self, text="Check Worker Role", command=self.check_role).grid(row=6, column=0, columnspan=2, pady=5)
-        tk.Button(self, text="Calculate Total Cost for Apartment", command=self.calculate_total_cost).grid(row=7, column=0, columnspan=2, pady=5)
-        tk.Button(self, text="Generate Maintenance Report", command=self.generate_report).grid(row=8, column=0, columnspan=2, pady=5)
+        # Buttons frame
+        buttons = tk.Frame(container)
+        buttons.grid(row=2, column=0, columnspan=2, pady=20)
+
+        tk.Button(buttons, text="Book Maintenance", width=30, command=self.book_maintenance).pack(pady=5)
+        tk.Button(buttons, text="Record Resolution", width=30, command=self.record_resolution).pack(pady=5)
+        tk.Button(buttons, text="Check Worker Availability", width=30, command=self.check_availability).pack(pady=5)
+        tk.Button(buttons, text="Check Worker Role", width=30, command=self.check_role).pack(pady=5)
+        tk.Button(buttons, text="Calculate Total Cost", width=30, command=self.calculate_total_cost).pack(pady=5)
+        tk.Button(buttons, text="Generate Maintenance Report", width=30, command=self.generate_report).pack(pady=5)
 
     # --- Button callbacks ---
     def book_maintenance(self):
