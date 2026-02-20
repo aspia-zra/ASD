@@ -10,8 +10,6 @@
     log cost and time """
     
 """ class: from class diagram 
-
-
 attributes: self.logid=logid
 logid
 apartmentid

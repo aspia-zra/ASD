@@ -1,6 +1,5 @@
 # Contains connection, Contains execute_query()
 # azra made this, idk if this is correct, check with imaan
-
 import mysql.connector
 
 class Database:
@@ -8,8 +7,9 @@ class Database:
         self.conn = mysql.connector.connect(
             host="localhost",
             user="root",
-            password="password",
-            database="db"
+            password="Root123456!",
+            database="secondverparagonapartment"
+
         )
         self.cursor = self.conn.cursor()
 
@@ -24,3 +24,5 @@ class Database:
     def fetch_all(self, query, values=None):
         self.cursor.execute(query, values)
         return self.cursor.fetchall()
+    
+db = Database()
