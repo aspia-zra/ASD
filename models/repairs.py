@@ -37,7 +37,7 @@ class Repair:
          self.Notes= Notes
     
     @staticmethod  # it's the same as booking the maintenance too   
-    def logMaintenance(db, apartmentID, userID, maintenanceDate):
+    def log_maintenance(db, apartmentID, userID, maintenanceDate):
         query = """
         INSERT INTO MaintenanceLog
         (apartmentID, userID, maintenanceDate, Notes)
@@ -56,7 +56,7 @@ class Repair:
         return result[0] if result[0] else 0
 
     @staticmethod 
-    def generateMaintenanceReport(db): # ask imaan though
+    def generate_report(db): # ask imaan though
         query = "SELECT * FROM MaintenanceLog"
         return db.fetch_all(query)
      
@@ -70,7 +70,7 @@ class Repair:
         db.execute(query, (time_taken, cost, notes, log_id))
 
     @staticmethod
-    def check_worker_availability(db, user_id, date):
+    def check_availability(db, user_id, date):
         query = """
             SELECT COUNT(*)
             FROM MaintenanceLog
@@ -80,7 +80,7 @@ class Repair:
         return result[0] == 0  # True if available
             
     @staticmethod
-    def check_worker_role_needed(db, user_id, required_role="maintenance"):
+    def check__role(db, user_id, required_role="maintenance"):
         query = """
             SELECT Role FROM UserTbl WHERE userID = %s
         """

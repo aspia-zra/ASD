@@ -1,11 +1,20 @@
 # tkinter layout
 # calls repair functions from models folder
+# stopped at slide 35
+# questons: pack object HERE, when to use and when have I used
+# window sizes
 
 
+
+import customtkinter as ctk
 import tkinter as tk
 from tkinter import messagebox, simpledialog
 from models.repairs import Repair
 from db.db_connect import db 
+
+
+ctk.set_appearance_mode("light")
+ctk.set_default_color_theme("blue")
 
 class RepairsPage(tk.Frame):
     def __init__(self, parent):
@@ -14,10 +23,7 @@ class RepairsPage(tk.Frame):
         self.create_widgets()
 
     def create_widgets(self):
-        # Make this frame expand fully
         self.pack(expand=True)
-
-        # Main centred container
         container = tk.Frame(self)
         container.pack(expand=True)
 
@@ -52,7 +58,7 @@ class RepairsPage(tk.Frame):
         buttons = tk.Frame(container)
         buttons.grid(row=2, column=0, columnspan=2, pady=20)
 
-        tk.Button(buttons, text="Book Maintenance", width=30, command=self.book_maintenance).pack(pady=5)
+        tk.Button(buttons, text="Book Maintenance", width=30, command=self.log_maintenance).pack(pady=5)
         tk.Button(buttons, text="Record Resolution", width=30, command=self.record_resolution).pack(pady=5)
         tk.Button(buttons, text="Check Worker Availability", width=30, command=self.check_availability).pack(pady=5)
         tk.Button(buttons, text="Check Worker Role", width=30, command=self.check_role).pack(pady=5)
