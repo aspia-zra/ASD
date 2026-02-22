@@ -3,7 +3,7 @@
 # stopped at slide 35
 # questons: pack object HERE, when to use and when have I used
 # window sizes
-
+# error hqndling for previous dates
 
 
 import customtkinter as ctk
@@ -79,13 +79,20 @@ class RepairsPage(ctk.CTkFrame):
                 font=("Arial", 18),
                 command=command
             ).pack(fill="x", padx=40, pady=15)
+   
     # --- Button callbacks ---
     def book_maintenance(self):
-        apartment_id = self.apartment_entry.get()
-        worker_id = self.worker_entry.get()
-        date = self.date_entry.get()
-        Repair.logMaintenance(db, apartment_id, worker_id, date)
+        apartment_id = self.apartment_entry.get().strip()
+        worker_id = self.worker_entry.get().strip()
+        date = self.date_entry.get().strip()
+
+        if not apartment_id or not worker_id or not date:
+            messagebox.showerror("Error", "Please complete all fields before booking maintenance.")
+            return
+
+        Repair.log_maintenance(db, apartment_id, worker_id, date)
         messagebox.showinfo("Success", "Maintenance visit booked!")
+
 
     def record_resolution(self):
         log_id = simpledialog.askinteger("Log ID", "Enter Log ID:")
@@ -98,13 +105,18 @@ class RepairsPage(ctk.CTkFrame):
     def check_availability(self):
         worker_id = self.worker_entry.get()
         date = self.date_entry.get()
-        available = Repair.check_worker_availability(db, worker_id, date)
+        available = Repair.check_availability(db, worker_id, date)
         msg = "Available" if available else "Not available"
         messagebox.showinfo("Worker Availability", f"Worker {worker_id} is {msg} on {date}.")
 
     def check_role(self):
-        worker_id = self.worker_entry.get()
-        valid = Repair.check_worker_role_needed(db, worker_id)
+        worker_id = self.worker_entry.get().strip()
+
+        if not worker_id:
+            messagebox.showerror("Error", "Please enter a Worker ID first.")
+            return
+
+        valid = Repair.check_role(db, worker_id)
         msg = "Correct role" if valid else "Incorrect role"
         messagebox.showinfo("Worker Role Check", f"Worker {worker_id}: {msg}.")
 
@@ -112,9 +124,14 @@ class RepairsPage(ctk.CTkFrame):
         apartment_id = self.apartment_entry.get()
         total = Repair.calculate_total_cost(db, apartment_id)
         messagebox.showinfo("Total Cost", f"Total maintenance cost for apartment {apartment_id}: {total}")
-
+        
     def generate_report(self):
-        logs = Repair.generateMaintenanceReport(db)
+        apartment_id = self.apartment_entry.get().strip()
+
+        if not apartment_id:
+            messagebox.showerror("Error", "Please enter an Apartment ID before generating a report.")
+            return
+        logs = Repair.generate_report(db)
         report_text = ""
         for log in logs:
             report_text += f"LogID: {log['logID']}, AptID: {log['apartmentID']}, WorkerID: {log['userID']}, Date: {log['maintenanceDate']}, Cost: {log['Cost']}, Notes: {log['Notes']}\n"

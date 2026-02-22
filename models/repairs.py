@@ -41,7 +41,7 @@ class Repair:
         query = """
         INSERT INTO MaintenanceLog
         (apartmentID, userID, maintenanceDate, Notes)
-        VALUES (%s, %s, %s)
+        VALUES (%s, %s, %s, %s)
         """
         db.execute(query, (apartmentID, userID, maintenanceDate, None))
     
@@ -80,10 +80,12 @@ class Repair:
         return result[0] == 0  # True if available
             
     @staticmethod
-    def check__role(db, user_id, required_role="maintenance"):
-        query = """
-            SELECT Role FROM UserTbl WHERE userID = %s
-        """
+    def check_role(db, user_id, required_role="maintenance"):
+        query = "SELECT Role FROM UserTbl WHERE userID = %s"
         role = db.fetch_one(query, (user_id,))
+
+        if role is None:
+            return False
+
         return role[0] == required_role
-        
+    # 22/02 as we dont have dummy data in the user table, it used to crash if the worker didnt exist
