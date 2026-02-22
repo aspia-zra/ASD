@@ -14,21 +14,23 @@ from db.db_connect import db
 
 
 ctk.set_appearance_mode("light")
-ctk.set_default_color_theme("blue")
+ctk.set_default_color_theme("dark-blue")
 
-class RepairsPage(tk.Frame):
+class RepairsPage(ctk.CTkFrame):
     def __init__(self, parent):
         super().__init__(parent)
         self.parent = parent
         self.create_widgets()
 
     def create_widgets(self):
-        self.pack(expand=True)
-        container = tk.Frame(self)
+        self.pack(fill='both',expand=True)
+        container = ctk.CTkFrame(self)
         container.pack(expand=True)
+        self.grid_rowconfigure(1, weight=1)
+        self.grid_columnconfigure(0, weight=1)
 
         # Title
-        title = tk.Label(
+        title = ctk.CTkLabel(
             container,
             text="Maintenance Management",
             font=("Arial", 22, "bold")
@@ -36,34 +38,34 @@ class RepairsPage(tk.Frame):
         title.grid(row=0, column=0, columnspan=2, pady=(0, 20))
 
         # Form frame (for inputs)
-        form = tk.Frame(container)
+        form = ctk.CTkFrame(container)
         form.grid(row=1, column=0, columnspan=2)
 
         # --- Apartment ID ---
-        tk.Label(form, text="Apartment ID").grid(row=0, column=0, sticky="e", padx=10, pady=5)
-        self.apartment_entry = tk.Entry(form, width=25)
+        ctk.CTkLabel(form, text="Apartment ID").grid(row=0, column=0, sticky="e", padx=10, pady=5)
+        self.apartment_entry = ctk.CTkEntry(form, width=25)
         self.apartment_entry.grid(row=0, column=1, pady=5)
 
         # --- Worker ID ---
-        tk.Label(form, text="Worker ID").grid(row=1, column=0, sticky="e", padx=10, pady=5)
-        self.worker_entry = tk.Entry(form, width=25)
+        ctk.CTkLabel(form, text="Worker ID").grid(row=1, column=0, sticky="e", padx=10, pady=5)
+        self.worker_entry = ctk.CTkEntry(form, width=25)
         self.worker_entry.grid(row=1, column=1, pady=5)
 
         # --- Maintenance Date ---
-        tk.Label(form, text="Maintenance Date (YYYY-MM-DD)").grid(row=2, column=0, sticky="e", padx=10, pady=5)
-        self.date_entry = tk.Entry(form, width=25)
+        ctk.CTkLabel(form, text="Maintenance Date (YYYY-MM-DD)").grid(row=2, column=0, sticky="e", padx=10, pady=5)
+        self.date_entry = ctk.CTkEntry(form, width=25)
         self.date_entry.grid(row=2, column=1, pady=5)
 
         # Buttons frame
-        buttons = tk.Frame(container)
+        buttons = ctk.CTkFrame(container)
         buttons.grid(row=2, column=0, columnspan=2, pady=20)
 
-        tk.Button(buttons, text="Book Maintenance", width=30, command=self.log_maintenance).pack(pady=5)
-        tk.Button(buttons, text="Record Resolution", width=30, command=self.record_resolution).pack(pady=5)
-        tk.Button(buttons, text="Check Worker Availability", width=30, command=self.check_availability).pack(pady=5)
-        tk.Button(buttons, text="Check Worker Role", width=30, command=self.check_role).pack(pady=5)
-        tk.Button(buttons, text="Calculate Total Cost", width=30, command=self.calculate_total_cost).pack(pady=5)
-        tk.Button(buttons, text="Generate Maintenance Report", width=30, command=self.generate_report).pack(pady=5)
+        ctk.CTkButton(buttons, text="Book Maintenance", width=30, command=self.book_maintenance).pack(pady=5)
+        ctk.CTkButton(buttons, text="Record Resolution", width=30, command=self.record_resolution).pack(pady=5)
+        ctk.CTkButton(buttons, text="Check Worker Availability", width=30, command=self.check_availability).pack(pady=5)
+        ctk.CTkButton(buttons, text="Check Worker Role", width=30, command=self.check_role).pack(pady=5)
+        ctk.CTkButton(buttons, text="Calculate Total Cost", width=30, command=self.calculate_total_cost).pack(pady=5)
+        ctk.CTkButton(buttons, text="Generate Maintenance Report", width=30, command=self.generate_report).pack(pady=5)
 
     # --- Button callbacks ---
     def book_maintenance(self):

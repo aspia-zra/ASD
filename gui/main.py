@@ -9,7 +9,7 @@ from gui.page_repairs import RepairsPage
 
 root = tk.Tk()
 root.title("Paragon Apartment Repairs")
-root.geometry("600x400")
+root.geometry("1000x700")
 
 repairs_page = RepairsPage(root)
 repairs_page.pack(fill="both", expand=True)
