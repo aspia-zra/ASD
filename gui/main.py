@@ -5,16 +5,29 @@
 
 
 import tkinter as tk
-from gui.page_repairs import RepairsPage
 
-root = tk.Tk()
-root.title("Paragon Apartment Repairs")
-root.geometry("1000x700")
+# when running as a package module (python -m gui.main) use a relative import;
+# if the file is executed directly (not recommended) fall back to absolute.
+try:
+    from .page_repairs import RepairsPage
+except ImportError:
+    # executed as a script from the gui directory
+    from page_repairs import RepairsPage
 
-repairs_page = RepairsPage(root)
-repairs_page.pack(fill="both", expand=True)
 
-root.mainloop()
+def main():
+    root = tk.Tk()
+    root.title("Paragon Apartment Repairs")
+    root.geometry("1000x700")
+
+    repairs_page = RepairsPage(root)
+    repairs_page.pack(fill="both", expand=True)
+
+    root.mainloop()
+
+
+if __name__ == "__main__":
+    main()
 
 
 ######### controls what is showing when. we need a navbar to copy paste
