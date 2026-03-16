@@ -4,6 +4,8 @@
 # resolve complaint (resolution/notes)
 # backend
 # testing (manual and automated)
+# should we have a single nav file with different navbar functions for each dashboard
+# OOP for dashboards?
 
 #####################################################################
 # in class: check if merccy has a maintenance report; 
