@@ -1,0 +1,26 @@
+# Repairs button
+repairsBtn = Button( 
+    sidebar, 
+    text="Repairs", 
+    bg=SIDEBAR_COLOR, 
+    fg=TEXT_COLOR, 
+    relief=FLAT, 
+    command=lambda: open_repairs(main) 
+) 
+repairsBtn.pack(pady=10, fill="x") 
+repairsBtn.bind("<Enter>", lambda e: repairsBtn.config(bg=SUB_ACCENT)) 
+repairsBtn.bind("<Leave>", lambda e: repairsBtn.config(bg=SIDEBAR_COLOR)) 
+    
+    
+# Complaints button
+complaintsBtn = Button( 
+    sidebar, 
+    text="Complaints", 
+    bg=SIDEBAR_COLOR, 
+    fg=TEXT_COLOR, 
+    relief=FLAT, 
+    command=lambda: open_complaints(main) 
+) 
+complaintsBtn.pack(pady=10, fill="x") 
+complaintsBtn.bind("<Enter>", lambda e: complaintsBtn.config(bg=SUB_ACCENT)) 
+complaintsBtn.bind("<Leave>", lambda e: complaintsBtn.config(bg=SIDEBAR_COLOR))
