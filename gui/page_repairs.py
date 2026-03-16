@@ -8,39 +8,7 @@ from db.db_connect import Database
 
 ctk.set_default_color_theme("dark-blue")
 
-
-def create_navbar(parent, show_dashboard, show_repairs, show_complaints, show_settings=None):
-    """Create reusable sidebar navigation.
-
-    This matches the sidebar used on the repairs page and can be used on other pages.
-    """
-
-    navbar = ctk.CTkFrame(parent, width=200)
-    navbar.grid(row=0, column=0, sticky="ns")
-    navbar.grid_columnconfigure(0, weight=1)
-
-    navtitle_label = ctk.CTkLabel(navbar, text="Paragon Apartments", font=("Arial", 24))
-    navtitle_label.grid(row=0, column=0, columnspan=2, padx=20, pady=20)
-
-    settings_btn = ctk.CTkButton(
-        navbar,
-        fg_color="#202e75",
-        hover_color="#0f0f30",
-        text="Settings",
-        command=show_settings if show_settings is not None else (lambda: None)
-    )
-    settings_btn.grid(row=3, column=0, padx=20, pady=20, sticky="ew")
-
-    complaints = ctk.CTkButton(navbar, fg_color="#202e75", hover_color="#0f0f30", text="Complaints", command=show_complaints)
-    complaints.grid(row=5, column=0, padx=20, pady=20, sticky="ew")
-
-    repairs = ctk.CTkButton(navbar, fg_color="#202e75", hover_color="#0f0f30", text="Repairs", command=show_repairs)
-    repairs.grid(row=6, column=0, padx=20, pady=20, sticky="ew")
-
-    logout = ctk.CTkButton(navbar, fg_color="#202e75", hover_color="#7a070d", text="Logout")
-    logout.grid(row=8, column=0, padx=20, pady=20, sticky="ew")
-
-    return navbar
+from gui.mnav import create_navbar
 
 
 class RepairsPage(ctk.CTkFrame):
@@ -86,10 +54,16 @@ class RepairsPage(ctk.CTkFrame):
         complaints_page.pack(fill="both", expand=True)
 
     def open_settings(self):
+        try:
+            from . import settings
+        except ImportError:
+            import tkinter.messagebox as messagebox
+            messagebox.showinfo("Settings", "Settings are not available yet.")
+            return
+
         for widget in self.master.winfo_children():
             widget.destroy()
 
-        from . import settings
         settings.settings(self.master)
 
 

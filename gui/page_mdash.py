@@ -1,7 +1,7 @@
 import customtkinter as ctk
 from tkinter import *
 from models.repairs import Repair
-from gui.page_repairs import create_navbar
+from gui.mnav import create_navbar
 
 
 BG_COLOR = "#f5f3ff"
@@ -46,7 +46,12 @@ def dashboard(parent, db):
         ComplaintsPage(parent, db).pack(fill="both", expand=True)
 
     def show_settings():
-        from . import settings
+        try:
+            from . import settings
+        except ImportError:
+            import tkinter.messagebox as messagebox
+            messagebox.showinfo("Settings", "Settings are not available yet.")
+            return
 
         for w in parent.winfo_children():
             w.destroy()

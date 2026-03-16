@@ -4,7 +4,7 @@ from tkinter import ttk
 import tkinter.messagebox as messagebox
 from db.db_connect import Database
 from models.complaints import Complaints
-from gui.page_repairs import create_navbar
+from gui.mnav import create_navbar
 
 class ComplaintsPage(ctk.CTkFrame):
     def __init__(self, parent, db=None):
@@ -48,10 +48,16 @@ class ComplaintsPage(ctk.CTkFrame):
         complaints_page.pack(fill="both", expand=True)
 
     def open_settings(self):
+        try:
+            from . import settings
+        except ImportError:
+            import tkinter.messagebox as messagebox
+            messagebox.showinfo("Settings", "Settings are not available yet.")
+            return
+
         for widget in self.master.winfo_children():
             widget.destroy()
 
-        from . import settings
         settings.settings(self.master)
 
     def submit_complaint(self):
