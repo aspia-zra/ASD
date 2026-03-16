@@ -1,4 +1,4 @@
-# Contains connection, Contains execute_query()
+# conn and execute 
 # azra made this, idk if this is correct, check with imaan
 import mysql.connector
 

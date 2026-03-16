@@ -1,0 +1,1 @@
+# navbar for the maintenance dashboard
