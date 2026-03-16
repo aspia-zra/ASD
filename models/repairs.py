@@ -60,7 +60,7 @@ class Repair:
         query = "SELECT * FROM MaintenanceLog"
         return db.fetch_all(query)
      
-    @staticmethod # same as log cost and time, removed for redundancy
+    @staticmethod # same as log cost and time, removed for redundancy, but this should be for the notes only
     def record_resolution(db, log_id, time_taken, cost, notes):
         query = """
             UPDATE MaintenanceLog
@@ -91,16 +91,21 @@ class Repair:
     # 22/02 as we dont have dummy data in the user table, it used to crash if the worker didnt exist
     
     
-    
-    
-    
-    
-    # more functions
-    # assign priority (i need a button for this in the repairs page)
-    
-# def get_openreq()
-# def get_completed() # gets last 5 completed repairs
-# def update_status() # if tagged as complete, refresh the page, resolve repair/complaint is within this 
-# # these are functions but might as well be buttons
 
+    # more functions
+
+# assign priority (i need a button for this in the repairs page) 
 # change the add repair and complaint buttons slightly with conditionals when refreshing the page
+
+##################################################
+
+# bro i dont have an issues class, unless either i make one, or just put combined functions into here, as i have done
+
+# def get_openreq() ISSUES
+# def get_completed() # gets last 5 completed ISSUES
+# def complete() (resolve)
+
+
+    @staticmethod
+    def get_openrequests():
+        
