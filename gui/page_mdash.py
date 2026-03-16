@@ -1,4 +1,5 @@
 # maintenance dashboard page, links with complaints and repairs page
+# question: how do we even link merccys reports page ... do i add it to mdash, aren't they reports for everyone?
 
 from tkinter import *
 from . import NavBar
