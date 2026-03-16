@@ -60,17 +60,8 @@ class RepairsPage(ctk.CTkFrame):
         navtitle_label = ctk.CTkLabel(self.navbar, text="Paragon Apartments", font=("Arial", 24))
         navtitle_label.grid(row=0, column=0, columnspan=2, padx=20, pady=20)
 
-        profile = ctk.CTkButton(self.navbar, fg_color="#202e75", hover_color="#0f0f30", text="Profile")
-        profile.grid(row=1, column=0, padx=20, pady=20, sticky="ew")
-
-        notif = ctk.CTkButton(self.navbar, fg_color="#202e75", hover_color="#0f0f30", text="Notifications")
-        notif.grid(row=2, column=0, padx=20, pady=20, sticky="ew")
-
         settings = ctk.CTkButton(self.navbar, fg_color="#202e75", hover_color="#0f0f30", text="Settings", command=self.open_settings)
         settings.grid(row=3, column=0, padx=20, pady=20, sticky="ew")
-
-        payments = ctk.CTkButton(self.navbar, fg_color="#202e75", hover_color="#0f0f30", text="Payments")
-        payments.grid(row=4, column=0, padx=20, pady=20, sticky="ew")
 
         complaints = ctk.CTkButton(self.navbar, fg_color="#202e75", hover_color="#0f0f30", text="Complaints", command=self.open_complaints)
         complaints.grid(row=5, column=0, padx=20, pady=20, sticky="ew")
