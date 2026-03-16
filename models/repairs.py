@@ -73,9 +73,9 @@ class Repair:
         return role[0] == required_role
 
 
-# -----------------------------
+
 # Complaint helper functions
-# -----------------------------
+
 
     @staticmethod
     def get_open_complaints(db):

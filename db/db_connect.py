@@ -1,17 +1,19 @@
-# conn and execute 
-# azra made this, idk if this is correct, check with imaan
 import mysql.connector
+from mysql.connector import errorcode
 
 class Database:
+
     def __init__(self):
+
         self.conn = mysql.connector.connect(
             host="localhost",
             user="root",
             password="Root123456!",
             database="secondverparagonapartment"
-
         )
-        self.cursor = self.conn.cursor()
+
+        # dictionary=True so rows return as {"column": value}
+        self.cursor = self.conn.cursor(dictionary=True)
 
     def execute(self, query, values=None):
         self.cursor.execute(query, values)
@@ -24,5 +26,7 @@ class Database:
     def fetch_all(self, query, values=None):
         self.cursor.execute(query, values)
         return self.cursor.fetchall()
-    
+
+
+# default shared connection (optional)
 db = Database()

@@ -1,6 +1,10 @@
+# maintenance dashboard
 from tkinter import *
-from . import NavBar
-from models.repair import Repair
+from .mnav import navbar
+from gui.page_repairs import RepairsPage
+from gui.page_complaints import ComplaintsPage
+from models.repairs import Repair
+from models.complaints import Complaints
 
 
 # themes
@@ -20,7 +24,14 @@ def dashboard(main, db):
     for widget in main.winfo_children():
         widget.destroy()
 
-    container = NavBar.navbar(main)
+    container = navbar(main)
+
+    # navbar buttons -> connect navigation
+    Button(container, text="Repairs",
+           command=lambda: open_repairs(main)).pack(pady=5)
+
+    Button(container, text="Complaints",
+           command=lambda: open_complaints(main)).pack(pady=5)
 
     title = Label(container, text="Maintenance Dashboard",
                   font=FONT_TITLE, bg=BG_COLOR, fg=TEXT_COLOR)
@@ -32,7 +43,7 @@ def dashboard(main, db):
     dashboardFrame.columnconfigure(0, weight=1)
     dashboardFrame.columnconfigure(1, weight=1)
 
-#open requests
+# open requests
 
     openFrame = Frame(dashboardFrame, bg=CARD_COLOR, padx=20, pady=20)
     openFrame.grid(row=0, column=0, padx=20, pady=20)
@@ -67,7 +78,7 @@ def dashboard(main, db):
         ).grid(row=row, column=5, padx=5)
 
 
-#completed
+# completed jobs
 
     completedFrame = Frame(dashboardFrame, bg=CARD_COLOR, padx=20, pady=20)
     completedFrame.grid(row=0, column=1, padx=20, pady=20)
@@ -94,6 +105,7 @@ def dashboard(main, db):
 
         Label(completedFrame, text=time, bg=CARD_COLOR).grid(row=row, column=2)
         Label(completedFrame, text=cost, bg=CARD_COLOR).grid(row=row, column=3)
+
 
 def show_complete_inputs(frame, request, row, db, main):
 
@@ -137,15 +149,15 @@ def finish_request(request, time, notes, cost, db, main):
     dashboard(main, db)
 
 
-#helper
+# navigation helpers
 
 def open_repairs(main):
 
     for widget in main.winfo_children():
         widget.destroy()
 
-    from . import RepairsPage
-    RepairsPage.repairs(main)
+    repairs_page = RepairsPage(main)
+    repairs_page.pack(fill="both", expand=True)
 
 
 def open_complaints(main):
@@ -153,5 +165,5 @@ def open_complaints(main):
     for widget in main.winfo_children():
         widget.destroy()
 
-    from . import ComplaintsPage
-    ComplaintsPage.complaints(main)
+    complaints_page = ComplaintsPage(main)
+    complaints_page.pack(fill="both", expand=True)

@@ -3,7 +3,7 @@ import customtkinter as ctk
 from tkinter import messagebox
 from datetime import datetime
 from models.repairs import Repair
-from db.db_connect import db
+from db.db_connect import Database
 
 
 ctk.set_default_color_theme("dark-blue")
@@ -11,8 +11,11 @@ ctk.set_default_color_theme("dark-blue")
 
 class RepairsPage(ctk.CTkFrame):
 
-    def __init__(self, parent):
+    def __init__(self, parent, db=None):
         super().__init__(parent)
+
+        # allow reusing a shared database connection if passed in
+        self.db = db or Database()
 
         self.grid_rowconfigure(0, weight=1)
         self.grid_columnconfigure(0, weight=1)
@@ -116,7 +119,7 @@ class RepairsPage(ctk.CTkFrame):
             messagebox.showerror("Error", "Enter an apartment ID first.")
             return
 
-        cost = Repair.calculate_total_cost(db, apartment_id)
+        cost = Repair.calculate_total_cost(self.db, apartment_id)
 
         messagebox.showinfo(
             "Estimated Cost",
@@ -157,8 +160,8 @@ class RepairsPage(ctk.CTkFrame):
             WHERE DATE(maintenanceDate) = DATE(%s)
             """
 
-            total_workers = db.fetch_one(total_workers_query)[0]
-            busy_workers = db.fetch_one(busy_workers_query, (date,))[0]
+            total_workers = self.db.fetch_one(total_workers_query)[0]
+            busy_workers = self.db.fetch_one(busy_workers_query, (date,))[0]
 
             if busy_workers >= total_workers:
                 messagebox.showerror(
@@ -168,7 +171,7 @@ class RepairsPage(ctk.CTkFrame):
                 return
 
             Repair.log_maintenance(
-                db,
+                self.db,
                 apartment_id,
                 None,
                 date
