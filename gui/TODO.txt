@@ -1,0 +1,27 @@
+#TODO:/ talk to imaan
+
+# go back and assign priorities to repairs page and dump
+# resolve complaint (resolution/notes)
+# backend
+# testing (manual and automated)
+
+
+
+
+#####################################################################
+# in class: check if merccy has a maintenance report; 
+# check everyone's commits and link together; 
+# create automated tests using the slides; 
+# create our group report;
+# any algorithms to optimise code?
+# some functions in my models file actually make sense to go in the complaints class file
+# class diagram actually has to change to reflect the implemented functions, e.g. the priorities
+# link maintenance dash in admin dash nav bar, not repairs page
+
+for drashti:
+
+# according to the class diagram, these are the functions u have that u don't necessarily need but i need to use for the dashboard:
+- update status
+- resolve complaint (ive created my own functions for this, u can delete yours or idk)
+
+

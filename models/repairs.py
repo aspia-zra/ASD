@@ -1,6 +1,6 @@
-#adeeb imports
 # using 'maintenance log' from class diagram
-#removed prev classes
+# some functions in here actually make sense to go in the complaints class
+# class diagram actually has to change to reflect the implemented functions
 
 """ # methods: from use case (more methods)
     book maintenance visits
@@ -89,3 +89,18 @@ class Repair:
 
         return role[0] == required_role
     # 22/02 as we dont have dummy data in the user table, it used to crash if the worker didnt exist
+    
+    
+    
+    
+    
+    
+    # more functions
+    # assign priority (i need a button for this in the repairs page)
+    
+# def get_openreq()
+# def get_completed() # gets last 5 completed repairs
+# def update_status() # if tagged as complete, refresh the page, resolve repair/complaint is within this 
+# # these are functions but might as well be buttons
+
+# change the add repair and complaint buttons slightly with conditionals when refreshing the page
