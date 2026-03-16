@@ -106,6 +106,169 @@ class Repair:
 # def complete() (resolve)
 
 
+
+
+
+
+# helper functions for below:
+    @staticmethod
+    def get_open_complaints():
+
+        query = """
+        SELECT complaintID, apartmentID, Description, reportDate, Severity
+        FROM Complaint
+        WHERE Status = 'open'
+        """
+
+        cursor.execute(query)
+        return cursor.fetchall()
+
+    @staticmethod
+    def get_closed_complaints():
+
+        query = """
+        SELECT complaintID, apartmentID, Description, reportDate, Resolution
+        FROM Complaint
+        WHERE Status = 'closed'
+        """
+
+        cursor.execute(query)
+        return cursor.fetchall()
+    
+    @staticmethod  
+    def get_open_repairs():
+
+        query = """
+        SELECT logID, apartmentID, userID, maintenanceDate, Notes
+        FROM MaintenanceLog
+        WHERE timeTaken IS NULL
+        """
+
+        cursor.execute(query)
+        return cursor.fetchall()
+    
+    @staticmethod
+    def get_completed_repairs():
+
+        query = """
+        SELECT logID, apartmentID, userID, maintenanceDate, timeTaken, Cost, Notes
+        FROM MaintenanceLog
+        WHERE timeTaken IS NOT NULL
+        """
+
+        cursor.execute(query)
+        return cursor.fetchall()
+    
+    @staticmethod
+    def close_complaint(complaint_id, resolution):
+
+        query = """
+        UPDATE Complaint
+        SET Status = 'closed',
+            Resolution = %s
+        WHERE complaintID = %s
+        """
+
+        cursor.execute(query, (resolution, complaint_id))
+    
+    
+    @staticmethod
+    def complete_repair(log_id, time_taken, cost, notes):
+
+        query = """
+        UPDATE MaintenanceLog
+        SET timeTaken = %s,
+            Cost = %s,
+            Notes = %s
+        WHERE logID = %s
+        """
+
+        cursor.execute(query, (time_taken, cost, notes, log_id))
+        
+    
+    
     @staticmethod
     def get_openrequests():
-        
+        complaints = get_open_complaints()
+        repairs = get_open_repairs()
+
+        requests = []
+
+        for c in complaints:
+            requests.append({
+                "id": c["complaintID"],
+                "type": "complaint",
+                "apartment": c["apartmentID"],
+                "issue": c["Description"],
+                "date": c["reportDate"],
+                "worker": None,
+                "priority": c["Severity"]
+            })
+
+        for r in repairs:
+            requests.append({
+                "id": r["logID"],
+                "type": "repair",
+                "apartment": r["apartmentID"],
+                "issue": r["Notes"],
+                "date": r["maintenanceDate"],
+                "worker": r["userID"],
+                "priority": None
+            })
+
+        return requests
+    
+    def get_completed_requests():
+
+        complaints = get_closed_complaints()
+        repairs = get_completed_repairs()
+
+        requests = []
+
+        for c in complaints:
+            requests.append({
+                "id": c["complaintID"],
+                "type": "complaint",
+                "apartment": c["apartmentID"],
+                "issue": c["Description"],
+                "date": c["reportDate"],
+                "resolution": c["Resolution"]
+            })
+
+        for r in repairs:
+            requests.append({
+                "id": r["logID"],
+                "type": "repair",
+                "apartment": r["apartmentID"],
+                "issue": r["Notes"],
+                "date": r["maintenanceDate"],
+                "timeTaken": r["timeTaken"]
+            })
+
+        return requests
+
+    def complete_request(request_id, request_type, time_taken, notes, cost):
+
+        if request_type == "complaint":
+
+            query = """
+            UPDATE Complaint
+            SET Status = 'closed',
+            Resolution = %s
+            WHERE complaintID = %s
+            """
+
+            execute_query(query, (notes, request_id))
+
+
+        elif request_type == "repair":
+
+            query = """
+            UPDATE MaintenanceLog
+            SET timeTaken = %s,
+            Cost = %s,
+            Notes = %s
+            WHERE logID = %s
+            """
+
+            execute_query(query, (time_taken, cost, notes, request_id))
