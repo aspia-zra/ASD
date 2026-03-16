@@ -6,7 +6,9 @@ from models.repairs import Repair
 from db.db_connect import Database
 
 
-ctk.set_default_color_theme("dark-blue")
+# Use a light appearance mode for the app
+ctk.set_appearance_mode("light")
+ctk.set_default_color_theme("blue")
 
 from gui.mnav import create_navbar
 

@@ -1,4 +1,5 @@
 import tkinter as tk
+import customtkinter as ctk
 from db.db_connect import Database
 from gui.mnav import navbar
 from gui.page_mdash import dashboard
@@ -40,9 +41,13 @@ class App:
 
 if __name__ == "__main__":
 
+    ctk.set_appearance_mode("light")
+    ctk.set_default_color_theme("blue")
+
     root = tk.Tk()
     root.title("Maintenance System")
     root.geometry("1000x700")
+    root.configure(bg="#FFFFFF")
 
     db = Database()
 

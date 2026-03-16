@@ -4,21 +4,43 @@ from models.repairs import Repair
 from gui.mnav import create_navbar
 
 
-BG_COLOR = "#f5f3ff"
-CARD_COLOR = "#ffffff"
-TEXT_COLOR = "#1f1f1f"
-ACCENT_COLOR = "#7c3aed"
+# theme palette
+PRIMARY = "#6B4EFF"
+PRIMARY_LIGHT = "#9B7EFF"
+PRIMARY_DARK = "#4A2FCC"
+BACKGROUND = "#F3E8FF"  # light purple background
+SURFACE = "#E6DEFF"     # slightly darker light purple cards
+TEXT_PRIMARY = "#1A1A2E"
+TEXT_SECONDARY = "#4A4A6A"
+SUCCESS = "#10B981"
+WARNING = "#F59E0B"
+DANGER = "#EF4444"
+INFO = "#3B82F6"
 
-FONT_TITLE = ("Segoe UI", 22, "bold")
-FONT_HEADER = ("Segoe UI", 14, "bold")
-FONT_LABEL = ("Segoe UI", 11)
-FONT_BTN = ("Segoe UI", 10, "bold")
+# dashboard style constants (mapped from palette)
+BG_COLOR = BACKGROUND
+CARD_COLOR = SURFACE
+TEXT_COLOR = TEXT_PRIMARY
+ACCENT_COLOR = PRIMARY
 
+TITLE_FONT = ("Helvetica", 24, "bold")
+HEADING_FONT = ("Helvetica", 18, "bold")
+SUBHEADING_FONT = ("Helvetica", 14, "bold")
+BODY_FONT = ("Helvetica", 12)
+SMALL_FONT = ("Helvetica", 10)
+
+# legacy names used in the code
+FONT_TITLE = TITLE_FONT
+FONT_HEADER = HEADING_FONT
+FONT_LABEL = BODY_FONT
+FONT_BTN = SMALL_FONT
 
 def dashboard(parent, db):
 
     for widget in parent.winfo_children():
         widget.destroy()
+
+    parent.configure(bg=BACKGROUND)
 
     page = ctk.CTkFrame(parent)
     page.pack(fill="both", expand=True)
@@ -71,15 +93,15 @@ def dashboard(parent, db):
     )
     title.pack(pady=30)
 
-    dashboardFrame = Frame(container, bg=BG_COLOR)
+    dashboardFrame = ctk.CTkFrame(container, fg_color=BG_COLOR)
     dashboardFrame.pack(pady=20)
 
     dashboardFrame.columnconfigure(0, weight=1)
     dashboardFrame.columnconfigure(1, weight=1)
 
     # open requests
-    openFrame = Frame(dashboardFrame, bg=CARD_COLOR, padx=20, pady=20)
-    openFrame.grid(row=0, column=0, padx=20, pady=20)
+    openFrame = ctk.CTkFrame(dashboardFrame, fg_color=CARD_COLOR, corner_radius=10)
+    openFrame.grid(row=0, column=0, padx=20, pady=20, sticky="nsew")
 
     Label(openFrame, text="Open Requests",
           font=FONT_HEADER, bg=CARD_COLOR).grid(row=0, column=0, columnspan=6, pady=10)
@@ -102,8 +124,8 @@ def dashboard(parent, db):
         Label(openFrame, text=r["priority"], bg=CARD_COLOR).grid(row=row, column=4)
 
     # completed jobs
-    completedFrame = Frame(dashboardFrame, bg=CARD_COLOR, padx=20, pady=20)
-    completedFrame.grid(row=0, column=1, padx=20, pady=20)
+    completedFrame = ctk.CTkFrame(dashboardFrame, fg_color=CARD_COLOR, corner_radius=10)
+    completedFrame.grid(row=0, column=1, padx=20, pady=20, sticky="nsew")
 
     Label(completedFrame, text="Completed Jobs",
           font=FONT_HEADER, bg=CARD_COLOR).grid(row=0, column=0, columnspan=4, pady=10)
