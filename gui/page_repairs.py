@@ -1,143 +1,173 @@
-# tkinter layout
-# calls repair functions from models folder
-# stopped at slide 35
-# questons: pack object HERE, when to use and when have I used
-# window sizes
-# error hqndling for previous dates
-
-
 import customtkinter as ctk
-import tkinter as tk
-from tkinter import messagebox, simpledialog
+from tkinter import messagebox
+from datetime import datetime
 from models.repairs import Repair
-from db.db_connect import db 
-
+from db.db_connect import db
 
 
 ctk.set_default_color_theme("dark-blue")
+
+
 class RepairsPage(ctk.CTkFrame):
+
     def __init__(self, parent):
         super().__init__(parent)
 
-        # Make page expandable
-        self.grid_rowconfigure(1, weight=1)
+        self.grid_rowconfigure(0, weight=1)
         self.grid_columnconfigure(0, weight=1)
 
         self.create_widgets()
 
     def create_widgets(self):
-
-        # ===== TITLE =====
+# wrappers
         title = ctk.CTkLabel(
             self,
-            text="Maintenance Management",
-            font=("Arial", 34, "bold")
+            text="Repair Booking",
+            font=("Segoe UI", 28, "bold")
         )
-        title.grid(row=0, column=0, pady=30)
+        title.pack(pady=30)
 
-        # ===== MAIN CONTENT =====
-        content = ctk.CTkFrame(self)
-        content.grid(row=1, column=0, sticky="nsew")
+        container = ctk.CTkFrame(self)
+        container.pack(pady=20, padx=40, fill="both", expand=True)
 
-        content.grid_columnconfigure((0, 1), weight=1)
-        content.grid_rowconfigure(0, weight=1)
+        container.grid_columnconfigure(0, weight=1)
 
-        # ===== FORM =====
-        form = ctk.CTkFrame(content)
-        form.grid(row=0, column=0, sticky="nsew")
+        form = ctk.CTkFrame(container)
+        form.grid(row=0, column=0, padx=40, pady=40, sticky="nsew")
 
         form.grid_columnconfigure(1, weight=1)
 
-        ctk.CTkLabel(form, text="Apartment ID", font=("Arial", 18)).grid(row=0, column=0, sticky="e", padx=20, pady=15)
-        self.apartment_entry = ctk.CTkEntry(form, height=40, font=("Arial", 16))
-        self.apartment_entry.grid(row=0, column=1, sticky="ew", padx=20, pady=15)
+# form components
+        #issue
+        ctk.CTkLabel(form, text="Issue / Notes", font=("Segoe UI", 16)).grid(
+            row=0, column=0, padx=20, pady=15, sticky="e"
+        )
 
-        ctk.CTkLabel(form, text="Worker ID", font=("Arial", 18)).grid(row=1, column=0, sticky="e", padx=20, pady=15)
-        self.worker_entry = ctk.CTkEntry(form, height=40, font=("Arial", 16))
-        self.worker_entry.grid(row=1, column=1, sticky="ew", padx=20, pady=15)
+        self.issue_entry = ctk.CTkEntry(form, height=40)
+        self.issue_entry.grid(row=0, column=1, padx=20, pady=15, sticky="ew")
 
-        ctk.CTkLabel(form, text="Maintenance Date (YYYY-MM-DD)", font=("Arial", 18)).grid(row=2, column=0, sticky="e", padx=20, pady=15)
-        self.date_entry = ctk.CTkEntry(form, height=40, font=("Arial", 16))
-        self.date_entry.grid(row=2, column=1, sticky="ew", padx=20, pady=15)
+        # apartment
+        ctk.CTkLabel(form, text="Apartment ID", font=("Segoe UI", 16)).grid(
+            row=1, column=0, padx=20, pady=15, sticky="e"
+        )
 
-        # ===== BUTTONS =====
-        buttons = ctk.CTkFrame(content)
-        buttons.grid(row=0, column=1, sticky="nsew")
+        self.apartment_entry = ctk.CTkEntry(form, height=40)
+        self.apartment_entry.grid(row=1, column=1, padx=20, pady=15, sticky="ew")
 
-        for text, command in [
-            ("Book Maintenance", self.book_maintenance),
-            ("Record Resolution", self.record_resolution),
-            ("Check Worker Availability", self.check_availability),
-            ("Check Worker Role", self.check_role),
-            ("Calculate Total Cost", self.calculate_total_cost),
-            ("Generate Maintenance Report", self.generate_report),
-        ]:
-            ctk.CTkButton(
-                buttons,
-                text=text,
-                height=50,
-                font=("Arial", 18),
-                command=command
-            ).pack(fill="x", padx=40, pady=15)
-   
-    # --- Button callbacks ---
-    def book_maintenance(self):
-        apartment_id = self.apartment_entry.get().strip()
-        worker_id = self.worker_entry.get().strip()
-        date = self.date_entry.get().strip()
+        # date
+        ctk.CTkLabel(form, text="Repair Date (YYYY-MM-DD)", font=("Segoe UI", 16)).grid(
+            row=2, column=0, padx=20, pady=15, sticky="e"
+        )
 
-        if not apartment_id or not worker_id or not date:
-            messagebox.showerror("Error", "Please complete all fields before booking maintenance.")
-            return
+        self.date_entry = ctk.CTkEntry(form, height=40)
+        self.date_entry.grid(row=2, column=1, padx=20, pady=15, sticky="ew")
 
-        Repair.log_maintenance(db, apartment_id, worker_id, date)
-        messagebox.showinfo("Success", "Maintenance visit booked!")
+        # priority
+        ctk.CTkLabel(form, text="Priority", font=("Segoe UI", 16)).grid(
+            row=3, column=0, padx=20, pady=15, sticky="e"
+        )
 
+        self.priority_box = ctk.CTkComboBox(
+            form,
+            values=["Low", "Medium", "High"]
+        )
+        self.priority_box.grid(row=3, column=1, padx=20, pady=15, sticky="ew")
 
-    def record_resolution(self):
-        log_id = simpledialog.askinteger("Log ID", "Enter Log ID:")
-        time_taken = simpledialog.askfloat("Time Taken", "Hours spent:")
-        cost = simpledialog.askfloat("Cost", "Repair cost:")
-        notes = simpledialog.askstring("Notes", "Any notes?")
-        Repair.record_resolution(db, log_id, time_taken, cost, notes)
-        messagebox.showinfo("Success", "Resolution logged!")
+        #util
+        button_frame = ctk.CTkFrame(container)
+        button_frame.grid(row=1, column=0, pady=20)
 
-    def check_availability(self):
-        worker_id = self.worker_entry.get()
-        date = self.date_entry.get()
-        available = Repair.check_availability(db, worker_id, date)
-        msg = "Available" if available else "Not available"
-        messagebox.showinfo("Worker Availability", f"Worker {worker_id} is {msg} on {date}.")
+        ctk.CTkButton(
+            button_frame,
+            text="Display Cost",
+            height=45,
+            command=self.display_cost
+        ).grid(row=0, column=0, padx=20)
 
-    def check_role(self):
-        worker_id = self.worker_entry.get().strip()
+        ctk.CTkButton(
+            button_frame,
+            text="Book Now",
+            height=45,
+            command=self.book_repair
+        ).grid(row=0, column=1, padx=20)
 
-        if not worker_id:
-            messagebox.showerror("Error", "Please enter a Worker ID first.")
-            return
+# date error handling
 
-        valid = Repair.check_role(db, worker_id)
-        msg = "Correct role" if valid else "Incorrect role"
-        messagebox.showinfo("Worker Role Check", f"Worker {worker_id}: {msg}.")
+    def valid_date(self, date_string):
 
-    def calculate_total_cost(self):
-        apartment_id = self.apartment_entry.get()
-        total = Repair.calculate_total_cost(db, apartment_id)
-        messagebox.showinfo("Total Cost", f"Total maintenance cost for apartment {apartment_id}: {total}")
-        
-    def generate_report(self):
+        try:
+            repair_date = datetime.strptime(date_string, "%Y-%m-%d").date()
+            today = datetime.today().date()
+
+            if repair_date < today:
+                return False
+
+            return True
+
+        except ValueError:
+            return False
+
+    def display_cost(self):
+
         apartment_id = self.apartment_entry.get().strip()
 
         if not apartment_id:
-            messagebox.showerror("Error", "Please enter an Apartment ID before generating a report.")
+            messagebox.showerror("Error", "Enter an apartment ID first.")
             return
-        logs = Repair.generate_report(db)
-        report_text = ""
-        for log in logs:
-            report_text += f"LogID: {log['logID']}, AptID: {log['apartmentID']}, WorkerID: {log['userID']}, Date: {log['maintenanceDate']}, Cost: {log['Cost']}, Notes: {log['Notes']}\n"
-        # Show in a simple popup
-        report_window = tk.Toplevel(self)
-        report_window.title("Maintenance Report")
-        text_box = tk.Text(report_window, wrap="word", width=100, height=30)
-        text_box.pack()
-        text_box.insert("1.0", report_text)
+
+        cost = Repair.calculate_total_cost(db, apartment_id)
+
+        messagebox.showinfo(
+            "Estimated Cost",
+            f"Total maintenance cost for apartment {apartment_id}: £{cost}"
+        )
+
+    def book_repair(self):
+
+        issue = self.issue_entry.get().strip()
+        apartment_id = self.apartment_entry.get().strip()
+        date = self.date_entry.get().strip()
+        priority = self.priority_box.get()
+
+        if not issue or not apartment_id or not date:
+            messagebox.showerror("Error", "Please fill in all fields.")
+            return
+
+        if not self.valid_date(date):
+            messagebox.showerror(
+                "Invalid Date",
+                "Repair date cannot be in the past and must follow YYYY-MM-DD."
+            )
+            return
+
+        try:
+
+            # Worker assignment could be automatic later
+            worker_id = None
+
+            Repair.log_maintenance(
+                db,
+                apartment_id,
+                worker_id,
+                date
+            )
+
+            # EMAIL PLACEHOLDER
+            # send_email_to_tenant(apartment_id, date)
+
+            messagebox.showinfo(
+                "Success",
+                "Repair booked successfully. Tenant notification sent."
+            )
+
+            self.clear_form()
+
+        except Exception as e:
+            messagebox.showerror("Error", str(e))
+
+    def clear_form(self):
+
+        self.issue_entry.delete(0, "end")
+        self.apartment_entry.delete(0, "end")
+        self.date_entry.delete(0, "end")
+        self.priority_box.set("")

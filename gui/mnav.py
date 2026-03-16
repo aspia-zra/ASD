@@ -119,9 +119,6 @@ def navbar(main):
 
     return container
 
-
-
-
 # completed functions to connect to other pages
 
 def open_settings(main):
