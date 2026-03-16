@@ -1,26 +1,51 @@
-# gui/main.py
-# entry point for the application
-
 import tkinter as tk
-
-# imports
-from .page_mdash import dashboard
 from db.db_connect import Database
+from gui.mnav import navbar
+from gui.page_mdash import dashboard
+from gui.page_repairs import RepairsPage
+from gui.page_complaints import ComplaintsPage
 
-def main():
 
-    root = tk.Tk()
-    root.title("Paragon Apartment Maintenance")
-    root.geometry("1000x700")
+class App:
 
-    # create database connection
-    db = Database()
+    def __init__(self, root, db):
 
-    # load dashboard first
-    dashboard(root, db)
+        self.root = root
+        self.db = db
 
-    root.mainloop()
+        self.content = root
+        self.show_dashboard()
+
+
+    def clear(self):
+
+        for w in self.content.winfo_children():
+            w.destroy()
+
+    def show_dashboard(self):
+
+        self.clear()
+        dashboard(self.content, self.db)
+
+    def show_repairs(self):
+
+        self.clear()
+        RepairsPage(self.content, self.db).pack(fill="both", expand=True)
+
+    def show_complaints(self):
+
+        self.clear()
+        ComplaintsPage(self.content, self.db).pack(fill="both", expand=True)
 
 
 if __name__ == "__main__":
-    main()
+
+    root = tk.Tk()
+    root.title("Maintenance System")
+    root.geometry("1000x700")
+
+    db = Database()
+
+    App(root, db)
+
+    root.mainloop()

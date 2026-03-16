@@ -9,6 +9,49 @@ from db.db_connect import Database
 ctk.set_default_color_theme("dark-blue")
 
 
+def create_navbar(parent, show_dashboard, show_repairs, show_complaints, show_settings=None):
+    """Create reusable sidebar navigation.
+
+    This matches the sidebar used on the repairs page and can be used on other pages.
+    """
+
+    navbar = ctk.CTkFrame(parent, width=200)
+    navbar.grid(row=0, column=0, sticky="ns")
+    navbar.grid_columnconfigure(0, weight=1)
+
+    navtitle_label = ctk.CTkLabel(navbar, text="Paragon Apartments", font=("Arial", 24))
+    navtitle_label.grid(row=0, column=0, columnspan=2, padx=20, pady=20)
+
+    profile = ctk.CTkButton(navbar, fg_color="#202e75", hover_color="#0f0f30", text="Profile")
+    profile.grid(row=1, column=0, padx=20, pady=20, sticky="ew")
+
+    notif = ctk.CTkButton(navbar, fg_color="#202e75", hover_color="#0f0f30", text="Notifications")
+    notif.grid(row=2, column=0, padx=20, pady=20, sticky="ew")
+
+    settings_btn = ctk.CTkButton(
+        navbar,
+        fg_color="#202e75",
+        hover_color="#0f0f30",
+        text="Settings",
+        command=show_settings if show_settings is not None else (lambda: None)
+    )
+    settings_btn.grid(row=3, column=0, padx=20, pady=20, sticky="ew")
+
+    payments = ctk.CTkButton(navbar, fg_color="#202e75", hover_color="#0f0f30", text="Payments")
+    payments.grid(row=4, column=0, padx=20, pady=20, sticky="ew")
+
+    complaints = ctk.CTkButton(navbar, fg_color="#202e75", hover_color="#0f0f30", text="Complaints", command=show_complaints)
+    complaints.grid(row=5, column=0, padx=20, pady=20, sticky="ew")
+
+    repairs = ctk.CTkButton(navbar, fg_color="#202e75", hover_color="#0f0f30", text="Repairs", command=show_repairs)
+    repairs.grid(row=6, column=0, padx=20, pady=20, sticky="ew")
+
+    logout = ctk.CTkButton(navbar, fg_color="#202e75", hover_color="#7a070d", text="Logout")
+    logout.grid(row=8, column=0, padx=20, pady=20, sticky="ew")
+
+    return navbar
+
+
 class RepairsPage(ctk.CTkFrame):
 
     def __init__(self, parent, db=None):
@@ -20,7 +63,13 @@ class RepairsPage(ctk.CTkFrame):
         self.grid_rowconfigure(0, weight=1)
         self.grid_columnconfigure(1, weight=1)
 
-        self.create_navbar()
+        self.navbar = create_navbar(
+            self,
+            self.open_dashboard,
+            self.open_repairs,
+            self.open_complaints,
+            self.open_settings
+        )
         self.create_widgets()
 
     def open_dashboard(self):
@@ -52,25 +101,6 @@ class RepairsPage(ctk.CTkFrame):
         from . import settings
         settings.settings(self.master)
 
-    def create_navbar(self):
-        self.navbar = ctk.CTkFrame(self, width=200)
-        self.navbar.grid(row=0, column=0, sticky="ns")
-        self.navbar.grid_columnconfigure(0, weight=1)
-
-        navtitle_label = ctk.CTkLabel(self.navbar, text="Paragon Apartments", font=("Arial", 24))
-        navtitle_label.grid(row=0, column=0, columnspan=2, padx=20, pady=20)
-
-        settings = ctk.CTkButton(self.navbar, fg_color="#202e75", hover_color="#0f0f30", text="Settings", command=self.open_settings)
-        settings.grid(row=3, column=0, padx=20, pady=20, sticky="ew")
-
-        complaints = ctk.CTkButton(self.navbar, fg_color="#202e75", hover_color="#0f0f30", text="Complaints", command=self.open_complaints)
-        complaints.grid(row=5, column=0, padx=20, pady=20, sticky="ew")
-
-        repairs = ctk.CTkButton(self.navbar, fg_color="#202e75", hover_color="#0f0f30", text="Repairs", command=self.open_repairs)
-        repairs.grid(row=6, column=0, padx=20, pady=20, sticky="ew")
-
-        logout = ctk.CTkButton(self.navbar, fg_color="#202e75", hover_color="#7a070d", text="Logout")
-        logout.grid(row=8, column=0, padx=20, pady=20, sticky="ew")
 
     def create_widgets(self):
         # Main content container (right side)

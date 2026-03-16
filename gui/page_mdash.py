@@ -1,33 +1,70 @@
-# maintenance dashboard
+import customtkinter as ctk
 from tkinter import *
-from .mnav import navbar
-from gui.page_repairs import RepairsPage
-from gui.page_complaints import ComplaintsPage
 from models.repairs import Repair
+from gui.page_repairs import create_navbar
 
 
-# themes
 BG_COLOR = "#f5f3ff"
 CARD_COLOR = "#ffffff"
 TEXT_COLOR = "#1f1f1f"
 ACCENT_COLOR = "#7c3aed"
 
-FONT_TITLE = ("Segoe UI", 18, "bold")
+FONT_TITLE = ("Segoe UI", 22, "bold")
 FONT_HEADER = ("Segoe UI", 14, "bold")
 FONT_LABEL = ("Segoe UI", 11)
 FONT_BTN = ("Segoe UI", 10, "bold")
 
 
-def dashboard(main, db):
+def dashboard(parent, db):
 
-    for widget in main.winfo_children():
+    for widget in parent.winfo_children():
         widget.destroy()
 
-    container = navbar(main)
+    page = ctk.CTkFrame(parent)
+    page.pack(fill="both", expand=True)
 
-    title = Label(container, text="Maintenance Dashboard",
-                  font=FONT_TITLE, bg=BG_COLOR, fg=TEXT_COLOR)
-    title.pack(pady=20)
+    page.grid_rowconfigure(0, weight=1)
+    page.grid_columnconfigure(1, weight=1)
+
+    def show_dashboard():
+        dashboard(parent, db)
+
+    def show_repairs():
+        from gui.page_repairs import RepairsPage
+
+        for w in parent.winfo_children():
+            w.destroy()
+
+        RepairsPage(parent, db).pack(fill="both", expand=True)
+
+    def show_complaints():
+        from gui.page_complaints import ComplaintsPage
+
+        for w in parent.winfo_children():
+            w.destroy()
+
+        ComplaintsPage(parent, db).pack(fill="both", expand=True)
+
+    def show_settings():
+        from . import settings
+
+        for w in parent.winfo_children():
+            w.destroy()
+
+        settings.settings(parent)
+
+    create_navbar(page, show_dashboard, show_repairs, show_complaints, show_settings)
+
+    # main content area (same as repairs container)
+    container = ctk.CTkFrame(page)
+    container.grid(row=0, column=1, sticky="nsew", padx=40, pady=20)
+
+    title = ctk.CTkLabel(
+        container,
+        text="Maintenance Dashboard",
+        font=FONT_TITLE
+    )
+    title.pack(pady=30)
 
     dashboardFrame = Frame(container, bg=BG_COLOR)
     dashboardFrame.pack(pady=20)
@@ -40,7 +77,7 @@ def dashboard(main, db):
     openFrame.grid(row=0, column=0, padx=20, pady=20)
 
     Label(openFrame, text="Open Requests",
-          font=FONT_HEADER, bg=CARD_COLOR, fg=TEXT_COLOR).grid(row=0, column=0, columnspan=6, pady=10)
+          font=FONT_HEADER, bg=CARD_COLOR).grid(row=0, column=0, columnspan=6, pady=10)
 
     headers = ["Issue", "Apartment", "Date", "Worker", "Priority", ""]
     for i, h in enumerate(headers):
@@ -59,21 +96,12 @@ def dashboard(main, db):
         Label(openFrame, text=r["worker"], bg=CARD_COLOR).grid(row=row, column=3)
         Label(openFrame, text=r["priority"], bg=CARD_COLOR).grid(row=row, column=4)
 
-        Button(
-            openFrame,
-            text="Complete",
-            bg=ACCENT_COLOR,
-            fg="white",
-            font=FONT_BTN,
-            command=lambda r=r, row=row: show_complete_inputs(openFrame, r, row, db, main)
-        ).grid(row=row, column=5, padx=5)
-
     # completed jobs
     completedFrame = Frame(dashboardFrame, bg=CARD_COLOR, padx=20, pady=20)
     completedFrame.grid(row=0, column=1, padx=20, pady=20)
 
     Label(completedFrame, text="Completed Jobs",
-          font=FONT_HEADER, bg=CARD_COLOR, fg=TEXT_COLOR).grid(row=0, column=0, columnspan=4, pady=10)
+          font=FONT_HEADER, bg=CARD_COLOR).grid(row=0, column=0, columnspan=4, pady=10)
 
     headers = ["Issue", "Apartment", "Time", "Cost"]
     for i, h in enumerate(headers):
@@ -94,63 +122,3 @@ def dashboard(main, db):
 
         Label(completedFrame, text=time, bg=CARD_COLOR).grid(row=row, column=2)
         Label(completedFrame, text=cost, bg=CARD_COLOR).grid(row=row, column=3)
-
-
-def show_complete_inputs(frame, request, row, db, main):
-
-    timeEntry = Entry(frame, width=5)
-    timeEntry.grid(row=row, column=2)
-
-    notesEntry = Entry(frame, width=15)
-    notesEntry.grid(row=row, column=3)
-
-    costEntry = Entry(frame, width=6)
-    costEntry.grid(row=row, column=4)
-
-    Button(
-        frame,
-        text="Done",
-        bg=ACCENT_COLOR,
-        fg="white",
-        font=FONT_BTN,
-        command=lambda: finish_request(
-            request,
-            timeEntry.get(),
-            notesEntry.get(),
-            costEntry.get(),
-            db,
-            main
-        )
-    ).grid(row=row, column=5)
-
-
-def finish_request(request, time, notes, cost, db, main):
-
-    Repair.complete_request(
-        db,
-        request["id"],
-        request["type"],
-        time,
-        notes,
-        cost
-    )
-
-    dashboard(main, db)
-
-
-# navigation helpers
-
-def open_repairs(main):
-
-    for widget in main.winfo_children():
-        widget.destroy()
-
-    RepairsPage(main).pack(fill="both", expand=True)
-
-
-def open_complaints(main):
-
-    for widget in main.winfo_children():
-        widget.destroy()
-
-    ComplaintsPage(main).pack(fill="both", expand=True)

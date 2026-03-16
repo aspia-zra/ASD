@@ -4,18 +4,25 @@ from tkinter import ttk
 import tkinter.messagebox as messagebox
 from db.db_connect import Database
 from models.complaints import Complaints
+from gui.page_repairs import create_navbar
 
 class ComplaintsPage(ctk.CTkFrame):
-    def __init__(self, parent):
+    def __init__(self, parent, db=None):
         super().__init__(parent)
 
         self.models = Complaints()
-        self.db = Database()
+        self.db = db or Database()
 
         self.grid_columnconfigure(1, weight=1)
         self.grid_rowconfigure(0, weight=1)
 
-        self.create_navbar()
+        self.navbar = create_navbar(
+            self,
+            self.open_dashboard,
+            self.open_repairs,
+            self.open_complaints,
+            self.open_settings
+        )
         self.create_form()
 
     def open_dashboard(self):
@@ -30,14 +37,14 @@ class ComplaintsPage(ctk.CTkFrame):
             widget.destroy()
 
         from .page_repairs import RepairsPage
-        repairs_page = RepairsPage(self.master)
+        repairs_page = RepairsPage(self.master, self.db)
         repairs_page.pack(fill="both", expand=True)
 
     def open_complaints(self):
         for widget in self.master.winfo_children():
             widget.destroy()
 
-        complaints_page = ComplaintsPage(self.master)
+        complaints_page = ComplaintsPage(self.master, self.db)
         complaints_page.pack(fill="both", expand=True)
 
     def open_settings(self):
@@ -46,26 +53,6 @@ class ComplaintsPage(ctk.CTkFrame):
 
         from . import settings
         settings.settings(self.master)
-
-    def create_navbar(self):
-        self.navbar = ctk.CTkFrame(self, width=200)
-        self.navbar.grid(row=0, column=0, sticky="ns")
-        self.navbar.grid_columnconfigure(0, weight=1)
-
-        navtitle_label = ctk.CTkLabel(self.navbar, text="Paragon Apartments", font=("Arial", 24))
-        navtitle_label.grid(row=0, column=0, columnspan=2, padx=20, pady=20)
-
-        settings = ctk.CTkButton(self.navbar, fg_color="#202e75", hover_color="#0f0f30", text="Settings", command=self.open_settings)
-        settings.grid(row=3, column=0, padx=20, pady=20, sticky="ew")
-
-        complaints = ctk.CTkButton(self.navbar, fg_color="#202e75", hover_color="#0f0f30", text="Complaints", command=self.open_complaints)
-        complaints.grid(row=5, column=0, padx=20, pady=20, sticky="ew")
-
-        repairs = ctk.CTkButton(self.navbar, fg_color="#202e75", hover_color="#0f0f30", text="Repairs", command=self.open_repairs)
-        repairs.grid(row=6, column=0, padx=20, pady=20, sticky="ew")
-
-        logout = ctk.CTkButton(self.navbar, fg_color="#202e75", hover_color="#7a070d", text="Logout")
-        logout.grid(row=8, column=0, padx=20, pady=20, sticky="ew")
 
     def submit_complaint(self):
         reason = self.Entrycomplaint.get()
