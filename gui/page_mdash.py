@@ -4,7 +4,6 @@ from .mnav import navbar
 from gui.page_repairs import RepairsPage
 from gui.page_complaints import ComplaintsPage
 from models.repairs import Repair
-from models.complaints import Complaints
 
 
 # themes
@@ -36,8 +35,7 @@ def dashboard(main, db):
     dashboardFrame.columnconfigure(0, weight=1)
     dashboardFrame.columnconfigure(1, weight=1)
 
-# open requests
-
+    # open requests
     openFrame = Frame(dashboardFrame, bg=CARD_COLOR, padx=20, pady=20)
     openFrame.grid(row=0, column=0, padx=20, pady=20)
 
@@ -70,9 +68,7 @@ def dashboard(main, db):
             command=lambda r=r, row=row: show_complete_inputs(openFrame, r, row, db, main)
         ).grid(row=row, column=5, padx=5)
 
-
-# completed jobs
-
+    # completed jobs
     completedFrame = Frame(dashboardFrame, bg=CARD_COLOR, padx=20, pady=20)
     completedFrame.grid(row=0, column=1, padx=20, pady=20)
 
@@ -149,8 +145,6 @@ def open_repairs(main):
     for widget in main.winfo_children():
         widget.destroy()
 
-    repairs_page = RepairsPage(main)
-    repairs_page.pack(fill="both", expand=True)
     RepairsPage(main).pack(fill="both", expand=True)
 
 
@@ -159,6 +153,4 @@ def open_complaints(main):
     for widget in main.winfo_children():
         widget.destroy()
 
-    complaints_page = ComplaintsPage(main)
-    complaints_page.pack(fill="both", expand=True)
     ComplaintsPage(main).pack(fill="both", expand=True)
