@@ -1,3 +1,4 @@
+# handling workers: one worker per repair per day. if none are available, display 'pick another day'
 import customtkinter as ctk
 from tkinter import messagebox
 from datetime import datetime
@@ -142,13 +143,34 @@ class RepairsPage(ctk.CTkFrame):
 
         try:
 
-            # Worker assignment could be automatic later
-            worker_id = None
+            # Worker availability check (1 job per worker per day)
+
+            total_workers_query = """
+            SELECT COUNT(*)
+            FROM UserTbl
+            WHERE Role = 'maintenance'
+            """
+
+            busy_workers_query = """
+            SELECT COUNT(DISTINCT userID)
+            FROM MaintenanceLog
+            WHERE DATE(maintenanceDate) = DATE(%s)
+            """
+
+            total_workers = db.fetch_one(total_workers_query)[0]
+            busy_workers = db.fetch_one(busy_workers_query, (date,))[0]
+
+            if busy_workers >= total_workers:
+                messagebox.showerror(
+                    "No Workers Available",
+                    "All maintenance workers already have a job that day. Please pick another date."
+                )
+                return
 
             Repair.log_maintenance(
                 db,
                 apartment_id,
-                worker_id,
+                None,
                 date
             )
 
