@@ -5,9 +5,6 @@
 # backend
 # testing (manual and automated)
 
-
-
-
 #####################################################################
 # in class: check if merccy has a maintenance report; 
 # check everyone's commits and link together; 
@@ -21,7 +18,7 @@
 for drashti:
 
 # according to the class diagram, these are the functions u have that u don't necessarily need but i need to use for the dashboard:
-- update status
+- update status (redundant)
 - resolve complaint (ive created my own functions for this, u can delete yours or idk)
 
 

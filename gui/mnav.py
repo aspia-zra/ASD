@@ -75,7 +75,7 @@ def navbar(main):
     # repairs button
     repairsBtn = Button( 
         sidebar, 
-        text="Repairs", 
+        text="Log Repair", 
         bg=SIDEBAR_COLOR, 
         fg=TEXT_COLOR, 
         relief=FLAT, 
@@ -89,7 +89,7 @@ def navbar(main):
     # complaints button
     complaintsBtn = Button( 
         sidebar, 
-        text="Complaints", 
+        text="Log Complaint", 
         bg=SIDEBAR_COLOR, 
         fg=TEXT_COLOR, 
         relief=FLAT, 
@@ -122,15 +122,12 @@ def navbar(main):
 
 
 
-# completed functions to connect to other pages, commented out the unmerged pages
+# completed functions to connect to other pages
 
-
-# commented out bcs i dont see a settings page on this commit
-
-# def open_settings(main):
-#     for widget in main.winfo_children():
-#         widget.destroy()
-#     settings.settings(main)
+def open_settings(main):
+    for widget in main.winfo_children():
+        widget.destroy()
+    settings.settings(main)
     
 def open_mdash(main):
     for widget in main.winfo_children():
@@ -142,15 +139,9 @@ def open_repairs(main):
         widget.destroy()
     page_repairs.repairs(main)
     
+def open_complaints(main):
+    for widget in main.winfo_children():
+        widget.destroy()
+    page_complaints.complaints(main)
     
-#commented out bcs i haven't linked drashtis stuff yet
-
-# def open_complaints(main):
-#     for widget in main.winfo_children():
-#         widget.destroy()
-#     page_complaints.complaints(main)
-    
-    
-    
-    
-# is there a logout button somewhere?    
+# cant add imaan's logout button, she didn't commit and push
