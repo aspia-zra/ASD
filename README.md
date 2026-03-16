@@ -42,6 +42,25 @@ instead of login-feature, rename your branch
 
 then u can commit and push normally. but make sure ur on git checkout [ur branch name], not main.
 
+## Adding yourself to the database
+
+ so everyone needs to add themselves as a user to test their own pages.
+
+STEP 1: create a file called hash_tool.py and paste this in:
+
+```python
+from models.user import UserTbl
+print(UserTbl.hash_password("whatever_password_you_want"))
+```
+
+STEP 2: run it in terminal, copy the output
+
+STEP 3: go into MySQL and run this:
+
+```
+INSERT INTO UserTbl (fullName, Email, Password, Role, locationID) 
+VALUES ('Your Name', 'your@email.com', 'paste_hash_here', 'your_role', 1);
+```
 
 
 

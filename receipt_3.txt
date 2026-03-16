@@ -1,0 +1,13 @@
+================================
+   PARAGON APARTMENT SYSTEM
+================================
+Receipt Date: 2026-03-16 14:03
+--------------------------------
+Invoice ID:   3
+Tenant:       Rho
+Amount:       £800.00
+Due Date:     2025-03-01
+Status:       pending
+--------------------------------
+Thank you for your payment.
+================================
