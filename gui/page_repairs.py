@@ -18,31 +18,89 @@ class RepairsPage(ctk.CTkFrame):
         self.db = db or Database()
 
         self.grid_rowconfigure(0, weight=1)
-        self.grid_columnconfigure(0, weight=1)
+        self.grid_columnconfigure(1, weight=1)
 
+        self.create_navbar()
         self.create_widgets()
 
+    def open_dashboard(self):
+        for widget in self.master.winfo_children():
+            widget.destroy()
+
+        from .page_mdash import dashboard
+        dashboard(self.master, self.db)
+
+    def open_repairs(self):
+        for widget in self.master.winfo_children():
+            widget.destroy()
+
+        repairs_page = RepairsPage(self.master, self.db)
+        repairs_page.pack(fill="both", expand=True)
+
+    def open_complaints(self):
+        for widget in self.master.winfo_children():
+            widget.destroy()
+
+        from .page_complaints import ComplaintsPage
+        complaints_page = ComplaintsPage(self.master)
+        complaints_page.pack(fill="both", expand=True)
+
+    def open_settings(self):
+        for widget in self.master.winfo_children():
+            widget.destroy()
+
+        from . import settings
+        settings.settings(self.master)
+
+    def create_navbar(self):
+        self.navbar = ctk.CTkFrame(self, width=200)
+        self.navbar.grid(row=0, column=0, sticky="ns")
+        self.navbar.grid_columnconfigure(0, weight=1)
+
+        navtitle_label = ctk.CTkLabel(self.navbar, text="Paragon Apartments", font=("Arial", 24))
+        navtitle_label.grid(row=0, column=0, columnspan=2, padx=20, pady=20)
+
+        profile = ctk.CTkButton(self.navbar, fg_color="#202e75", hover_color="#0f0f30", text="Profile")
+        profile.grid(row=1, column=0, padx=20, pady=20, sticky="ew")
+
+        notif = ctk.CTkButton(self.navbar, fg_color="#202e75", hover_color="#0f0f30", text="Notifications")
+        notif.grid(row=2, column=0, padx=20, pady=20, sticky="ew")
+
+        settings = ctk.CTkButton(self.navbar, fg_color="#202e75", hover_color="#0f0f30", text="Settings", command=self.open_settings)
+        settings.grid(row=3, column=0, padx=20, pady=20, sticky="ew")
+
+        payments = ctk.CTkButton(self.navbar, fg_color="#202e75", hover_color="#0f0f30", text="Payments")
+        payments.grid(row=4, column=0, padx=20, pady=20, sticky="ew")
+
+        complaints = ctk.CTkButton(self.navbar, fg_color="#202e75", hover_color="#0f0f30", text="Complaints", command=self.open_complaints)
+        complaints.grid(row=5, column=0, padx=20, pady=20, sticky="ew")
+
+        repairs = ctk.CTkButton(self.navbar, fg_color="#202e75", hover_color="#0f0f30", text="Repairs", command=self.open_repairs)
+        repairs.grid(row=6, column=0, padx=20, pady=20, sticky="ew")
+
+        logout = ctk.CTkButton(self.navbar, fg_color="#202e75", hover_color="#7a070d", text="Logout")
+        logout.grid(row=8, column=0, padx=20, pady=20, sticky="ew")
+
     def create_widgets(self):
-# wrappers
+        # Main content container (right side)
+        self.container = ctk.CTkFrame(self)
+        self.container.grid(row=0, column=1, sticky="nsew", padx=40, pady=20)
+        self.container.grid_columnconfigure(0, weight=1)
+
         title = ctk.CTkLabel(
-            self,
+            self.container,
             text="Repair Booking",
             font=("Segoe UI", 28, "bold")
         )
-        title.pack(pady=30)
+        title.grid(row=0, column=0, pady=30)
 
-        container = ctk.CTkFrame(self)
-        container.pack(pady=20, padx=40, fill="both", expand=True)
-
-        container.grid_columnconfigure(0, weight=1)
-
-        form = ctk.CTkFrame(container)
-        form.grid(row=0, column=0, padx=40, pady=40, sticky="nsew")
+        form = ctk.CTkFrame(self.container)
+        form.grid(row=1, column=0, padx=40, pady=40, sticky="nsew")
 
         form.grid_columnconfigure(1, weight=1)
 
-# form components
-        #issue
+        # form components
+        # issue
         ctk.CTkLabel(form, text="Issue / Notes", font=("Segoe UI", 16)).grid(
             row=0, column=0, padx=20, pady=15, sticky="e"
         )
@@ -77,9 +135,9 @@ class RepairsPage(ctk.CTkFrame):
         )
         self.priority_box.grid(row=3, column=1, padx=20, pady=15, sticky="ew")
 
-        #util
-        button_frame = ctk.CTkFrame(container)
-        button_frame.grid(row=1, column=0, pady=20)
+        # util
+        button_frame = ctk.CTkFrame(self.container)
+        button_frame.grid(row=2, column=0, pady=20)
 
         ctk.CTkButton(
             button_frame,

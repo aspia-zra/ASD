@@ -26,13 +26,6 @@ def dashboard(main, db):
 
     container = navbar(main)
 
-    # navbar buttons -> connect navigation
-    Button(container, text="Repairs",
-           command=lambda: open_repairs(main)).pack(pady=5)
-
-    Button(container, text="Complaints",
-           command=lambda: open_complaints(main)).pack(pady=5)
-
     title = Label(container, text="Maintenance Dashboard",
                   font=FONT_TITLE, bg=BG_COLOR, fg=TEXT_COLOR)
     title.pack(pady=20)
@@ -158,6 +151,7 @@ def open_repairs(main):
 
     repairs_page = RepairsPage(main)
     repairs_page.pack(fill="both", expand=True)
+    RepairsPage(main).pack(fill="both", expand=True)
 
 
 def open_complaints(main):
@@ -167,3 +161,4 @@ def open_complaints(main):
 
     complaints_page = ComplaintsPage(main)
     complaints_page.pack(fill="both", expand=True)
+    ComplaintsPage(main).pack(fill="both", expand=True)

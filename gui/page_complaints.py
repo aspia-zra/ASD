@@ -10,7 +10,6 @@ class ComplaintsPage(ctk.CTkFrame):
         super().__init__(parent)
 
         self.models = Complaints()
-
         self.db = Database()
 
         self.grid_columnconfigure(1, weight=1)
@@ -18,6 +17,64 @@ class ComplaintsPage(ctk.CTkFrame):
 
         self.create_navbar()
         self.create_form()
+
+    def open_dashboard(self):
+        for widget in self.master.winfo_children():
+            widget.destroy()
+
+        from .page_mdash import dashboard
+        dashboard(self.master, self.db)
+
+    def open_repairs(self):
+        for widget in self.master.winfo_children():
+            widget.destroy()
+
+        from .page_repairs import RepairsPage
+        repairs_page = RepairsPage(self.master)
+        repairs_page.pack(fill="both", expand=True)
+
+    def open_complaints(self):
+        for widget in self.master.winfo_children():
+            widget.destroy()
+
+        complaints_page = ComplaintsPage(self.master)
+        complaints_page.pack(fill="both", expand=True)
+
+    def open_settings(self):
+        for widget in self.master.winfo_children():
+            widget.destroy()
+
+        from . import settings
+        settings.settings(self.master)
+
+    def create_navbar(self):
+        self.navbar = ctk.CTkFrame(self, width=200)
+        self.navbar.grid(row=0, column=0, sticky="ns")
+        self.navbar.grid_columnconfigure(0, weight=1)
+
+        navtitle_label = ctk.CTkLabel(self.navbar, text="Paragon Apartments", font=("Arial", 24))
+        navtitle_label.grid(row=0, column=0, columnspan=2, padx=20, pady=20)
+
+        profile = ctk.CTkButton(self.navbar, fg_color="#202e75", hover_color="#0f0f30", text="Profile")
+        profile.grid(row=1, column=0, padx=20, pady=20, sticky="ew")
+
+        notif = ctk.CTkButton(self.navbar, fg_color="#202e75", hover_color="#0f0f30", text="Notifications")
+        notif.grid(row=2, column=0, padx=20, pady=20, sticky="ew")
+
+        settings = ctk.CTkButton(self.navbar, fg_color="#202e75", hover_color="#0f0f30", text="Settings", command=self.open_settings)
+        settings.grid(row=3, column=0, padx=20, pady=20, sticky="ew")
+
+        payments = ctk.CTkButton(self.navbar, fg_color="#202e75", hover_color="#0f0f30", text="Payments")
+        payments.grid(row=4, column=0, padx=20, pady=20, sticky="ew")
+
+        complaints = ctk.CTkButton(self.navbar, fg_color="#202e75", hover_color="#0f0f30", text="Complaints", command=self.open_complaints)
+        complaints.grid(row=5, column=0, padx=20, pady=20, sticky="ew")
+
+        repairs = ctk.CTkButton(self.navbar, fg_color="#202e75", hover_color="#0f0f30", text="Repairs", command=self.open_repairs)
+        repairs.grid(row=6, column=0, padx=20, pady=20, sticky="ew")
+
+        logout = ctk.CTkButton(self.navbar, fg_color="#202e75", hover_color="#7a070d", text="Logout")
+        logout.grid(row=8, column=0, padx=20, pady=20, sticky="ew")
 
     def submit_complaint(self):
         reason = self.Entrycomplaint.get()
@@ -56,34 +113,6 @@ class ComplaintsPage(ctk.CTkFrame):
             status = complaint["status"]
             self.tree.insert("", "end", values=(reason, timestamp, severity, status))
 
-    def create_navbar(self):
-        self.navbar = ctk.CTkFrame(self, width=200)
-        self.navbar.grid(row=0, column=0, sticky="ns")
-        self.navbar.grid_columnconfigure(0, weight=1)
-        #nav bar 
-        navtitle_label = ctk.CTkLabel(self.navbar, text="Paragon Apartments", font=("Arial", 24))
-        navtitle_label.grid(row = 0, column = 0, columnspan = 2, padx = 20, pady = 20,)
-
-        profile = ctk.CTkButton(self.navbar, fg_color="#202e75", hover_color="#0f0f30",text="Profile")
-        profile.grid(row = 1, column = 0, columnspan = 1, padx = 20, pady = 20, sticky = "ew")
-
-        notif = ctk.CTkButton(self.navbar, fg_color="#202e75", hover_color="#0f0f30",text="Notifications")
-        notif.grid(row = 2, column = 0, columnspan = 1, padx = 20, pady = 20, sticky = "ew")
-
-        settings = ctk.CTkButton(self.navbar, fg_color="#202e75", hover_color="#0f0f30",text="Settings")
-        settings.grid(row = 3, column = 0, columnspan = 1, padx = 20, pady = 20, sticky = "ew")
-
-        payments = ctk.CTkButton(self.navbar, fg_color="#202e75", hover_color="#0f0f30",text="Payments")
-        payments.grid(row = 4, column = 0, columnspan = 1, padx = 20, pady = 20, sticky = "ew")
-
-        complaints = ctk.CTkButton(self.navbar, fg_color="#202e75", hover_color="#0f0f30",text="Complaints")
-        complaints.grid(row = 5, column = 0, columnspan = 1, padx = 20, pady = 20, sticky = "ew")
-
-        repairs = ctk.CTkButton(self.navbar, fg_color="#202e75", hover_color="#0f0f30",text="Repairs",command=self.open_repairs)
-        repairs.grid(row = 6, column = 0, columnspan = 1, padx = 20, pady = 20, sticky = "ew")
-
-        logout = ctk.CTkButton(self.navbar, fg_color="#202e75",hover_color="#7a070d",text="Logout")
-        logout.grid(row = 8, column = 0, columnspan = 1, padx = 20, pady = 20, sticky = "ew")
     
     def create_form(self):
         self.form = ctk.CTkFrame(self)
