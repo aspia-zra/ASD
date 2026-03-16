@@ -1,5 +1,8 @@
 from tkinter import *
+import matplotlib
+import customtkinter as ctk
 from . import Admindash, settings
+from Models.logincode import UserTbl
 
 #Themes- work on font
 BG_COLOR = "#f5f3ff"
@@ -16,84 +19,90 @@ FONT_LABEL = ("Segoe UI", 11)
 FONT_ENTRY = ("Segoe UI", 11)
 FONT_BTN = ("Segoe UI", 11, "bold")
 
-# Left handside Navbar section
-def navbar(main):
-    sidebar = Frame(main, bg=SIDEBAR_COLOR, width=220)
-    sidebar.pack(side="left", fill="y")
+class navbar(ctk.CTkFrame):
+    def __init__(self, parent, controller):
+        super().__init__(parent)
 
+        self.controller = controller
 
-    card = Frame(sidebar, bg=CARD_COLOR)
-    card.pack(padx=10, pady=10, fill="both")
+        self.grid(row=0, column=0, sticky="ns")
 
-    form = Frame(card, bg=CARD_COLOR)
-    form.pack(padx=30, pady=30)
+        self.create_navbar()
+        
+    def create_navbar(self):
+        self.navbar = ctk.CTkFrame(self, width=200)
+        self.navbar.grid(row=0, column=0, sticky="ns")
+        self.navbar.grid_columnconfigure(0, weight=1)
 
-    Button(card, text="Register Tenant", font=FONT_BTN,
-              bg=ACCENT_COLOR, fg="white", width=20,
-              relief="flat", command=open_settings).pack(pady=20)
+        #nav bar 
+        navtitle_label = ctk.CTkLabel(
+            self.navbar, 
+            text="Paragon Apartments", 
+            font=("Arial", 24))
+        navtitle_label.grid(row = 0, column = 0, columnspan = 2, padx = 20, pady = 20,)
 
-    # Logo Section
-    logo_frame = Frame(sidebar, bg=SIDEBAR_COLOR)
-    logo_frame.pack(pady=20)
+        dashboard = ctk.CTkButton(
+            self.navbar, 
+            fg_color="#202e75", 
+            hover_color="#0f0f30",
+            command = self.open_admindash,
+            text="Dashboard")
+        dashboard.grid(row = 1, column = 0, columnspan = 1, padx = 20, pady = 20, sticky = "ew")
 
-    profile_label = Label(
-        logo_frame,
-        text="+",
-        font=("Helvetica", 28),
-        bg=SIDEBAR_COLOR,
-        fg=TEXT_COLOR
-    )
-    profile_label.pack(side="left", padx=10)
+        notif = ctk.CTkButton(
+            self.navbar, 
+            fg_color="#202e75", 
+            hover_color="#0f0f30",
+            text="Notifications")
+        notif.grid(row = 2, column = 0, columnspan = 1, padx = 20, pady = 20, sticky = "ew")
 
-    text_label = Label(
-        logo_frame,
-        text="Paragon\nApartments",
-        bg=SIDEBAR_COLOR,
-        fg=TEXT_COLOR,
-        font=("Helvetica", 18, "bold")
-    )
-    text_label.pack(pady=20)
-    text_label.pack(padx=5)
+        settings = ctk.CTkButton(
+            self.navbar, 
+            fg_color="#202e75", 
+            hover_color="#0f0f30", 
+            command = self.open_settings,
+            text="Settings")
+        settings.grid(row = 3, column = 0, columnspan = 1, padx = 20, pady = 20, sticky = "ew")
 
-    ## Dashhboard button
-    submitdash = Button(sidebar, 
-        text="Dashboard", 
-        bg=SIDEBAR_COLOR, 
-        fg=TEXT_COLOR,
-        command=lambda: open_admindash(main))
-    submitdash.pack(pady=10)
-    submitdash.bind("<Enter>", lambda e: submitdash.config(bg=SUB_ACCENT))
-    submitdash.bind("<Leave>", lambda e: submitdash.config(bg=SUB_ACCENT))
+        payments = ctk.CTkButton(
+            self.navbar, 
+            fg_color="#202e75", 
+            hover_color="#0f0f30", 
+            text="Payments")
+        payments.grid(row = 4, column = 0, columnspan = 1, padx = 20, pady = 20, sticky = "ew")
 
-    ## Settings button
-    submitsettings = Button(sidebar, 
-        text="Settings", 
-        bg=SIDEBAR_COLOR, 
-        fg=TEXT_COLOR,
-        relief= FLAT, 
-        bd =0,
-        command=lambda: open_settings(main))
-    submitsettings.pack(pady=10)
-    submitsettings.bind("<Enter>", lambda e: submitsettings.config(bg=SUB_ACCENT))
-    submitsettings.bind("<Leave>", lambda e: submitsettings.config(bg=SUB_ACCENT))
+        complaints = ctk.CTkButton(
+            self.navbar, 
+            fg_color="#202e75", 
+            hover_color="#0f0f30", 
+            text="Complaints")
+        complaints.grid(row = 5, column = 0, columnspan = 1, padx = 20, pady = 20, sticky = "ew")
 
-    container = Frame(main, bg=BG_COLOR)
-    container.pack(side="right", fill="both", expand=True)
+        repairs = ctk.CTkButton(
+            self.navbar, 
+            fg_color="#202e75", 
+            hover_color="#0f0f30", 
+            text="Repairs")
+        repairs.grid(row = 6, column = 0, columnspan = 1, padx = 20, pady = 20, sticky = "ew")
 
-    container.grid_rowconfigure(0, weight=1)
-    container.grid_columnconfigure(0, weight=1)
-
-    return container
-
-# Functions to connect to other pages
-def open_admindash(main):
-    for widget in main.winfo_children():
-        widget.destroy()
+        logout = ctk.CTkButton(
+            self.navbar, 
+            fg_color="#202e75", 
+            hover_color="#7a070d", 
+            text="Logout", 
+            command = self.logoutbtn)
+        logout.grid(row = 8, column = 0, columnspan = 1, padx = 20, pady = 20, sticky = "ew")
     
-    Admindash.dashboard(main)
+    def open_admindash(self):
+        self.controller.clear_page()
+        self.controller.current_page = Admindash.admindashboard(self.controller)
+        self.controller.current_page.grid(row=0, column=0, sticky="nsew")
 
-def open_settings(main):
-    for widget in main.winfo_children():
-        widget.destroy()
+    def open_settings(self):
+        self.controller.clear_page()
+        self.controller.current_page = settings.settings(self.controller)
+        self.controller.current_page.grid(row=0, column=0, sticky="nsew")
     
-    settings.settings(main)
+    def logoutbtn(self):
+        UserTbl.logout()
+        self.controller.show_login()
