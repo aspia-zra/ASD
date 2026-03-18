@@ -1,6 +1,6 @@
 import customtkinter as ctk
-from views.reports_view import ReportsView
-from views.finance_view import FinanceView
+from gui.reports_view import ReportsView
+from gui.finance_view import FinanceView
 import theme
 
 class PAMSApp(ctk.CTk):

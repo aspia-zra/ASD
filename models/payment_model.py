@@ -1,4 +1,5 @@
 from models.db import Database
+from datetime import datetime, timedelta
 
 
 class FinanceModel:
@@ -45,9 +46,12 @@ class FinanceModel:
         return cursor.fetchall()
 
     @staticmethod
-    def get_upcoming_dues():
+    def get_upcoming_dues(days=7):
         db = Database()
         cursor = db.get_cursor()
+        today  = datetime.now().strftime('%Y-%m-%d')
+        future = (datetime.now() +
+                  timedelta(days=days)).strftime('%Y-%m-%d')
         cursor.execute('''
             SELECT i.invoiceID, i.Amount, i.dueDate,
                    u.fullName, a.apartmentNumber
@@ -60,8 +64,8 @@ class FinanceModel:
                 ON t.userID = u.userID
             JOIN Apartment a
                 ON ls.apartmentID = a.apartmentID
-            WHERE i.Status IN ("pending", "overdue")
+            WHERE i.Status IN ("pending","overdue")
+              AND i.dueDate BETWEEN %s AND %s
             ORDER BY i.dueDate ASC
-            LIMIT 10
-        ''')
+        ''', (today, future))
         return cursor.fetchall()
