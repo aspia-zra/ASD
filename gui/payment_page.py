@@ -1,3 +1,4 @@
+
 import customtkinter as ctk
 from tkinter import messagebox
 import tkinter as tk
@@ -11,55 +12,17 @@ class PaymentPage(ctk.CTkFrame):
 
         self.controller = controller
 
-        # main layout 
-        self.grid_columnconfigure(0, weight=0)
-        self.grid_columnconfigure(1, weight=1)
+        # main layout - no sidebar, content fills full frame
+        self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure(0, weight=1)
-
-        # navbar placeholder 
-        self.navbar_frame = ctk.CTkFrame(self, width=200, fg_color="#202e75", corner_radius=0)
-        self.navbar_frame.grid(row=0, column=0, sticky="ns")
-        self.navbar_frame.grid_propagate(False)
-
-        ctk.CTkLabel(
-            self.navbar_frame,
-            text="Paragon\nApartments",
-            font=("Arial", 16, "bold"),
-            text_color="white"
-        ).grid(row=0, column=0, pady=30, padx=20)
-
-        nav_buttons = ["Dashboard", "Notifications", "Settings", "Payments", "Complaints", "Repairs"]
-
-        for i, name in enumerate(nav_buttons):
-            ctk.CTkButton(
-                self.navbar_frame,
-                text=name,
-                fg_color="#202e75",
-                hover_color="#0f0f30",
-                text_color="white",
-                font=("Arial", 12),
-                width=160,
-                corner_radius=8
-            ).grid(row=i+1, column=0, padx=20, pady=8, sticky="ew")
-
-        ctk.CTkButton(
-            self.navbar_frame,
-            text="Logout",
-            fg_color="#202e75",
-            hover_color="#7a070d",
-            text_color="white",
-            font=("Arial", 12, "bold"),
-            width=160,
-            corner_radius=8
-        ).grid(row=9, column=0, padx=20, pady=20, sticky="ew")
 
         # main content area
         self.content = ctk.CTkFrame(self, fg_color="#f5f5f5", corner_radius=0)
-        self.content.grid(row=0, column=1, sticky="nsew")
+        self.content.grid(row=0, column=0, sticky="nsew")
         self.content.grid_columnconfigure(0, weight=1)
-        self.content.grid_rowconfigure(3, weight=1)
+        self.content.grid_rowconfigure(4, weight=1)
 
-        
+        # late payment alert banner
         self.alert_label = ctk.CTkLabel(
             self.content,
             text="⚠️ There are overdue invoices! Please review.",
@@ -70,7 +33,7 @@ class PaymentPage(ctk.CTkFrame):
             height=35
         )
 
-        
+        # title
         ctk.CTkLabel(
             self.content,
             text="Payment & Billing",
@@ -85,7 +48,7 @@ class PaymentPage(ctk.CTkFrame):
             text_color="gray"
         ).grid(row=2, column=0, pady=(0, 15))
 
-        
+        # action buttons
         btn_frame = ctk.CTkFrame(self.content, fg_color="transparent")
         btn_frame.grid(row=3, column=0, pady=(0, 15))
 
@@ -149,7 +112,7 @@ class PaymentPage(ctk.CTkFrame):
             command=self.reset_invoice
         ).grid(row=0, column=4, padx=8)
 
-        
+        # invoice table
         table_frame = ctk.CTkFrame(self.content, fg_color="white", corner_radius=12)
         table_frame.grid(row=4, column=0, sticky="nsew", padx=20, pady=(0, 10))
         table_frame.grid_columnconfigure(0, weight=1)
@@ -190,7 +153,7 @@ class PaymentPage(ctk.CTkFrame):
         self.table.grid(row=0, column=0, sticky="nsew", padx=10, pady=10)
         scrollbar.grid(row=0, column=1, sticky="ns", pady=10)
 
-        
+        # status label
         self.status_label = ctk.CTkLabel(
             self.content,
             text="",

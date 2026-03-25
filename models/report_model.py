@@ -1,8 +1,8 @@
 from models.db import Database
-
-
+ 
+ 
 class ReportModel:
-
+ 
     @staticmethod
     def get_occupancy_report(city=None):
         db = Database()
@@ -39,25 +39,25 @@ class ReportModel:
                          a.Status, l.City
             ''')
         return cursor.fetchall()
-
+ 
     @staticmethod
     def get_financial_report():
         db = Database()
         cursor = db.get_cursor()
+        # fixed: removed incorrect JOIN to UserTbl
+        # tenant name comes directly from Tenant table
         cursor.execute('''
             SELECT i.invoiceID, i.Amount, i.dueDate,
-                   i.Status, u.fullName
+                   i.Status, t.fullName
             FROM Invoice i
             JOIN LeaseAgreement ls
                 ON i.leaseID = ls.leaseID
             JOIN Tenant t
                 ON ls.tenantID = t.tenantID
-            JOIN UserTbl u
-                ON t.userID = u.userID
             ORDER BY i.dueDate DESC
         ''')
         return cursor.fetchall()
-
+ 
     @staticmethod
     def get_maintenance_report():
         db = Database()
@@ -72,3 +72,4 @@ class ReportModel:
             ORDER BY ml.maintenanceDate DESC
         ''')
         return cursor.fetchall()
+ 

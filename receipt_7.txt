@@ -1,0 +1,13 @@
+================================
+   PARAGON APARTMENT SYSTEM
+================================
+Receipt Date: 2026-03-16 12:08
+--------------------------------
+Invoice ID:   7
+Tenant:       nasra,kuse
+Amount:       £750.00
+Due Date:     2025-03-01
+Status:       paid
+--------------------------------
+Thank you for your payment.
+================================

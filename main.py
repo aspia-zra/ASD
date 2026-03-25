@@ -1,6 +1,7 @@
 import customtkinter as ctk
 from gui.reports_view import ReportsView
 from gui.finance_view import FinanceView
+from gui.payment_page import PaymentPage
 import theme
 
 class PAMSApp(ctk.CTk):
@@ -29,10 +30,11 @@ class PAMSApp(ctk.CTk):
         logo.pack(pady=(30, 40))
 
         nav_buttons = [
-            ("📊 Reports", "Reports"),
-            ("💰 Finance", "Finance"),
-            # Add other pages later
+            ("Reports", "Reports"),
+            ("Finance", "Finance"),
+            ("Payments", "Payments"),
         ]
+
         self.nav_buttons = {}
         for text, name in nav_buttons:
             btn = ctk.CTkButton(self.sidebar, text=text,
@@ -62,6 +64,8 @@ class PAMSApp(ctk.CTk):
                 self.views[view_name] = ReportsView(self.content_frame, self)
             elif view_name == "Finance":
                 self.views[view_name] = FinanceView(self.content_frame, self)
+            elif view_name == "Payments":
+                self.views[view_name] = PaymentPage(self.content_frame, self)
 
             if view_name in self.views:
                 self.views[view_name].grid(row=0, column=0, sticky="nsew")
