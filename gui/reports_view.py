@@ -1,6 +1,6 @@
 import customtkinter as ctk
 from tkinter import ttk
-import theme
+from gui import theme
 from controllers.report_controller import ReportController
 
 class ReportsView(ctk.CTkFrame):

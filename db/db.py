@@ -5,6 +5,6 @@ def get_connection():
         host="localhost",
         user="root",
         password="Mire6374*",
-        database="asd_paragon"
+        database='secondverparagonapartment'
     )
     return connection
