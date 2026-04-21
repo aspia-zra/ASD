@@ -12,66 +12,68 @@
 
 import unittest, os, sys
 from models.complaints import Complaints
-from db.db_connect import Database
+from db import db
 
 class TestComplaints(unittest.TestCase):
+    def setUp(self):
+        self.db = db
     # Testing tenant search func: 
     def test_validTenantSearch(self):
-        db = Database()
-        complaints_instance = Complaints(db)
+        conn = self.db.get_connection()
+        complaints_instance = Complaints()
         tenant_id = complaints_instance.get_tenantID("A102")
         self.assertEqual(tenant_id, 2)
-        if hasattr(db, 'close'): 
-            db.close() 
+        if hasattr(conn, 'close'): 
+            conn.close() 
 
     def test_invalidApt(self):
-        db = Database()
-        complaints_instance = Complaints(db)
+        conn = self.db.get_connection()
+        complaints_instance = Complaints()
         tenant_id = complaints_instance.get_tenantID("NILNIL")
         self.assertIsNone(tenant_id)
-        if hasattr(db, 'close'): 
-            db.close() 
+        if hasattr(conn, 'close'): 
+            conn.close() 
 
     def test_invalidLease(self):
-        db = Database()
-        complaints_instance = Complaints(db)
+        conn = self.db.get_connection()
+        complaints_instance = Complaints()
         tenant_id = complaints_instance.get_tenantID("NILNIL")
         self.assertIsNone(tenant_id)
-        if hasattr(db, 'close'): 
-            db.close() 
+        if hasattr(conn, 'close'): 
+            conn.close() 
     
     # Testing add complaint func: 
     def test_validAddComplaint(self):
-        db = Database()
-        complaints_instance = Complaints(db)
+        conn = self.db.get_connection()
+        complaints_instance = Complaints()
         result = complaints_instance.add_complaint("Heating not working", "3", "A102", "Broken heater")
         self.assertTrue(result)
-        if hasattr(db, 'close'): 
-            db.close() 
+        if hasattr(conn, 'close'): 
+            conn.close() 
 
     def test_invalidAptAdd(self):
-        db = Database()
-        complaints_instance = Complaints(db)
+        conn = self.db.get_connection()
+        complaints_instance = Complaints()
         result = complaints_instance.add_complaint("Invalid apt test", "2", "NILNIL", "Invalid apt test")
         self.assertFalse(result)
-        if hasattr(db, 'close'): 
-            db.close() 
+        if hasattr(conn, 'close'): 
+            conn.close() 
 
     def test_invalidTenant(self):
-        db = Database()
-        complaints_instance = Complaints(db)
+        conn = self.db.get_connection()
+        complaints_instance = Complaints()
         result = complaints_instance.add_complaint("Empty apt test", "1", "NILNIL", "Invalid Lease")
         self.assertFalse(result)
-        if hasattr(db, 'close'): 
-            db.close() 
+        if hasattr(conn, 'close'): 
+            conn.close() 
 
     def test_missingReason(self):
-        db = Database()
-        complaints_instance = Complaints(db)
+        conn = self.db.get_connection()
+        complaints_instance = Complaints()
         result = complaints_instance.add_complaint("", "2", "A102", "Missing reason test")
         self.assertTrue(result)
-        if hasattr(db, 'close'): 
-            db.close() 
+        if hasattr(conn, 'close'): 
+            conn.close() 
 
 if __name__ == '__main__':
     unittest.main()
