@@ -1,4 +1,4 @@
-# Advanced Systems Development University Group Project
+# Advanced Software Development University Group Project
 ## This project uses Tkinter and Python to develop an apartment management web application. 
 
 A five person project.
