@@ -7,7 +7,6 @@ from .pages_mngdash import mngdashboard
 from models import user_session
 from models.front_desk import FrontDesk
 from . import theme, page_mdash
-from gui.payment_page import PaymentPage
 
 BG_COLOR = theme.BACKGROUND
 
@@ -92,62 +91,13 @@ class navbar(ctk.CTkFrame):
         self._reset_navbar()
         btnConfig = self._nav_button_config()
 
-        dashboard = ctk.CTkButton(
-            self.navbar,
-            command=self.open_admindash,
-            text="Dashboard",
-            **btnConfig,
-        )
-        dashboard.grid(row=1, column=0, padx=20, pady=20, sticky="ew")
-
-        reports = ctk.CTkButton(
-            self.navbar,
-            command=self.open_adminreports,
-            text="Reports View",
-            **btnConfig,
-        )
-        reports.grid(row=2, column=0, padx=20, pady=20, sticky="ew")
-
-        maintenance = ctk.CTkButton(
-            self.navbar,
-            command=self.open_maintdash,
-            text="Maintenance View",
-            **btnConfig,
-        )
-        maintenance.grid(row=3, column=0, padx=20, pady=20, sticky="ew")
-
-        finance = ctk.CTkButton(
-            self.navbar,
-            command=self.open_financedash,
-            text="Finance View",
-            **btnConfig,
-        )
-        finance.grid(row=4, column=0, padx=20, pady=20, sticky="ew")
-
-        frontdesk = ctk.CTkButton(
-            self.navbar,
-            command=self.open_frontdash,
-            text="Front-desk View",
-            **btnConfig,
-        )
-        frontdesk.grid(row=5, column=0, padx=20, pady=20, sticky="ew")
-
-        settings_button = ctk.CTkButton(
-            self.navbar,
-            command=self.open_settings,
-            text="Settings",
-            **btnConfig,
-        )
-        settings_button.grid(row=6, column=0, padx=20, pady=20, sticky="ew")
-
-        logout = ctk.CTkButton(
-            self.navbar,
-            fg_color=theme.PRIMARY,
-            hover_color=theme.DANGER,
-            text="Logout",
-            command=self.logoutbtn,
-        )
-        logout.grid(row=8, column=0, padx=20, pady=20, sticky="s")
+        ctk.CTkButton(self.navbar, command=self.open_admindash, text="Dashboard", **btnConfig).grid(row=1, column=0, padx=20, pady=20, sticky="ew")
+        ctk.CTkButton(self.navbar, command=self.open_adminreports, text="Reports View", **btnConfig).grid(row=2, column=0, padx=20, pady=20, sticky="ew")
+        ctk.CTkButton(self.navbar, command=self.open_maintdash, text="Maintenance View", **btnConfig).grid(row=3, column=0, padx=20, pady=20, sticky="ew")
+        ctk.CTkButton(self.navbar, command=self.open_financedash, text="Finance View", **btnConfig).grid(row=4, column=0, padx=20, pady=20, sticky="ew")
+        ctk.CTkButton(self.navbar, command=self.open_frontdash, text="Front-desk View", **btnConfig).grid(row=5, column=0, padx=20, pady=20, sticky="ew")
+        ctk.CTkButton(self.navbar, command=self.open_settings, text="Settings", **btnConfig).grid(row=6, column=0, padx=20, pady=20, sticky="ew")
+        ctk.CTkButton(self.navbar, fg_color=theme.PRIMARY, hover_color=theme.DANGER, text="Logout", command=self.logoutbtn).grid(row=8, column=0, padx=20, pady=20, sticky="s")
 
     def mng_nav(self):
         self._reset_navbar()
@@ -160,192 +110,43 @@ class navbar(ctk.CTkFrame):
             dashboard_text = "Dashboard"
             dashboard_command = self.open_admindash
 
-        dashboard = ctk.CTkButton(
-            self.navbar,
-            command=dashboard_command,
-            text=dashboard_text,
-            **btnConfig,
-        )
-        dashboard.grid(row=1, column=0, padx=20, pady=20, sticky="ew")
+        ctk.CTkButton(self.navbar, command=dashboard_command, text=dashboard_text, **btnConfig).grid(row=1, column=0, padx=20, pady=20, sticky="ew")
+        ctk.CTkButton(self.navbar, command=self.open_managerReports, text="Reports View", **btnConfig).grid(row=2, column=0, padx=20, pady=20, sticky="ew")
+        ctk.CTkButton(self.navbar, command=self.open_maintdash, text="Maintenance View", **btnConfig).grid(row=3, column=0, padx=20, pady=20, sticky="ew")
+        ctk.CTkButton(self.navbar, command=self.open_financedash, text="Finance View", **btnConfig).grid(row=4, column=0, padx=20, pady=20, sticky="ew")
+        ctk.CTkButton(self.navbar, command=self.open_frontdash, text="Front-desk View", **btnConfig).grid(row=5, column=0, padx=20, pady=20, sticky="ew")
+        ctk.CTkButton(self.navbar, command=self.open_settings, text="Settings", **btnConfig).grid(row=6, column=0, padx=20, pady=20, sticky="ew")
+        ctk.CTkButton(self.navbar, fg_color=theme.PRIMARY, hover_color=theme.DANGER, text="Logout", command=self.logoutbtn).grid(row=8, column=0, padx=20, pady=20, sticky="s")
 
-        reports = ctk.CTkButton(
-            self.navbar,
-            command=self.open_managerReports,
-            text="Reports View",
-            **btnConfig,
-        )
-        reports.grid(row=2, column=0, padx=20, pady=20, sticky="ew")
-
-        maintenance = ctk.CTkButton(
-            self.navbar,
-            command=self.open_maintdash,
-            text="Maintenance View",
-            **btnConfig,
-        )
-        maintenance.grid(row=3, column=0, padx=20, pady=20, sticky="ew")
-
-        finance = ctk.CTkButton(
-            self.navbar,
-            command=self.open_financedash,
-            text="Finance View",
-            **btnConfig,
-        )
-        finance.grid(row=4, column=0, padx=20, pady=20, sticky="ew")
-
-        frontdesk = ctk.CTkButton(
-            self.navbar,
-            command=self.open_frontdash,
-            text="Front-desk View",
-            **btnConfig,
-        )
-        frontdesk.grid(row=5, column=0, padx=20, pady=20, sticky="ew")
-
-        settings_button = ctk.CTkButton(
-            self.navbar,
-            command=self.open_settings,
-            text="Settings",
-            **btnConfig,
-        )
-        settings_button.grid(row=6, column=0, padx=20, pady=20, sticky="ew")
-
-        logout = ctk.CTkButton(
-            self.navbar,
-            fg_color=theme.PRIMARY,
-            hover_color=theme.DANGER,
-            text="Logout",
-            command=self.logoutbtn,
-        )
-        logout.grid(row=8, column=0, padx=20, pady=20, sticky="s")
-    
     def maintenance_dashboard_nav(self):
         self._reset_navbar()
         btnConfig = self._nav_button_config()
 
-        maintenance_dashboard = ctk.CTkButton(
-            self.navbar,
-            command=self.open_maintdash,
-            text="Maintenance Dashboard",
-            **btnConfig,
-        )
-        maintenance_dashboard.grid(row=1, column=0, padx=20, pady=20, sticky="ew")
-
-        complaints_button = ctk.CTkButton(
-            self.navbar,
-            command=self.open_complaints,
-            text="Complaints",
-            **btnConfig,
-        )
-        complaints_button.grid(row=2, column=0, padx=20, pady=20, sticky="ew")
-
-        repairs_button = ctk.CTkButton(
-            self.navbar,
-            command=self.open_repairs,
-            text="Repairs",
-            **btnConfig,
-        )
-        repairs_button.grid(row=3, column=0, padx=20, pady=20, sticky="ew")
-
-        settings_button = ctk.CTkButton(
-            self.navbar,
-            command=self.open_settings,
-            text="Settings",
-            **btnConfig,
-        )
-        settings_button.grid(row=4, column=0, padx=20, pady=20, sticky="ew")
-
-        logout = ctk.CTkButton(
-            self.navbar,
-            fg_color=theme.PRIMARY,
-            hover_color=theme.DANGER,
-            text="Logout",
-            command=self.logoutbtn,
-        )
-        logout.grid(row=8, column=0, padx=20, pady=20, sticky="s")
+        ctk.CTkButton(self.navbar, command=self.open_maintdash, text="Maintenance Dashboard", **btnConfig).grid(row=1, column=0, padx=20, pady=20, sticky="ew")
+        ctk.CTkButton(self.navbar, command=self.open_complaints, text="Complaints", **btnConfig).grid(row=2, column=0, padx=20, pady=20, sticky="ew")
+        ctk.CTkButton(self.navbar, command=self.open_repairs, text="Repairs", **btnConfig).grid(row=3, column=0, padx=20, pady=20, sticky="ew")
+        ctk.CTkButton(self.navbar, command=self.open_settings, text="Settings", **btnConfig).grid(row=4, column=0, padx=20, pady=20, sticky="ew")
+        ctk.CTkButton(self.navbar, fg_color=theme.PRIMARY, hover_color=theme.DANGER, text="Logout", command=self.logoutbtn).grid(row=8, column=0, padx=20, pady=20, sticky="s")
 
     def front_nav(self):
         self._reset_navbar()
         btnConfig = self._nav_button_config()
 
-        dashboard = ctk.CTkButton(
-            self.navbar,
-            command=self.open_frontdash,
-            text="Dashboard",
-            **btnConfig,
-        )
-        dashboard.grid(row=1, column=0, padx=20, pady=20, sticky="ew")
-
-        complaints = ctk.CTkButton(
-            self.navbar,
-            command=self.open_complaints,
-            text="Complaints",
-            **btnConfig,
-        )
-        complaints.grid(row=2, column=0, padx=20, pady=20, sticky="ew")
-
-        repairs = ctk.CTkButton(
-            self.navbar,
-            command=self.open_repairs,
-            text="Repairs",
-            **btnConfig,
-        )
-        repairs.grid(row=3, column=0, padx=20, pady=20, sticky="ew")
-
-        assign_apartment = ctk.CTkButton(
-            self.navbar,
-            command=self.open_assign_apartment,
-            text="Assign Apartment",
-            **btnConfig,
-        )
-        assign_apartment.grid(row=4, column=0, padx=20, pady=20, sticky="ew")
-
-        logout = ctk.CTkButton(
-            self.navbar,
-            fg_color=theme.PRIMARY,
-            hover_color=theme.DANGER,
-            text="Logout",
-            command=self.logoutbtn,
-        )
-        logout.grid(row=8, column=0, padx=20, pady=20, sticky="s")
+        ctk.CTkButton(self.navbar, command=self.open_frontdash, text="Dashboard", **btnConfig).grid(row=1, column=0, padx=20, pady=20, sticky="ew")
+        ctk.CTkButton(self.navbar, command=self.open_complaints, text="Complaints", **btnConfig).grid(row=2, column=0, padx=20, pady=20, sticky="ew")
+        ctk.CTkButton(self.navbar, command=self.open_repairs, text="Repairs", **btnConfig).grid(row=3, column=0, padx=20, pady=20, sticky="ew")
+        ctk.CTkButton(self.navbar, command=self.open_assign_apartment, text="Assign Apartment", **btnConfig).grid(row=4, column=0, padx=20, pady=20, sticky="ew")
+        ctk.CTkButton(self.navbar, fg_color=theme.PRIMARY, hover_color=theme.DANGER, text="Logout", command=self.logoutbtn).grid(row=8, column=0, padx=20, pady=20, sticky="s")
 
     def finance_nav(self):
         self._reset_navbar()
         btnConfig = self._nav_button_config()
-        ctk.CTkButton(
-            self.navbar, 
-            command=self.open_financedash, 
-            text="Finance Dashboard", 
-            **btnConfig
-        ).grid(row=1, column=0, padx=20, pady=20, sticky="ew")
-        
-        ctk.CTkButton(
-            self.navbar, 
-            command=self.open_financeReports, 
-            text="Reports",
-            **btnConfig
-        ).grid(row=2, column=0, padx=20, pady=20, sticky="ew")
-        
-        ctk.CTkButton(
-            self.navbar, 
-            command=self.open_payments, 
-            text="Payments", 
-            **btnConfig
-        ).grid(row=3, column=0, padx=20, pady=20, sticky="ew")
 
-        settings_button = ctk.CTkButton(
-            self.navbar,
-            command=self.open_settings,
-            text="Settings",
-            **btnConfig,
-        )
-        settings_button.grid(row=4, column=0, padx=20, pady=20, sticky="ew")
-
-        ctk.CTkButton(
-            self.navbar, 
-            fg_color=theme.PRIMARY, 
-            hover_color=theme.DANGER, 
-            text="Logout", 
-            command=self.logoutbtn
-        ).grid(row=8, column=0, padx=20, pady=20, sticky="s")
+        ctk.CTkButton(self.navbar, command=self.open_financedash, text="Finance Dashboard", **btnConfig).grid(row=1, column=0, padx=20, pady=20, sticky="ew")
+        ctk.CTkButton(self.navbar, command=self.open_financeReports, text="Reports", **btnConfig).grid(row=2, column=0, padx=20, pady=20, sticky="ew")
+        ctk.CTkButton(self.navbar, command=self.open_payments, text="Payments", **btnConfig).grid(row=3, column=0, padx=20, pady=20, sticky="ew")
+        ctk.CTkButton(self.navbar, command=self.open_settings, text="Settings", **btnConfig).grid(row=4, column=0, padx=20, pady=20, sticky="ew")
+        ctk.CTkButton(self.navbar, fg_color=theme.PRIMARY, hover_color=theme.DANGER, text="Logout", command=self.logoutbtn).grid(row=8, column=0, padx=20, pady=20, sticky="s")
 
     def open_mngdash(self):
         self.controller.clear_page()
@@ -355,7 +156,6 @@ class navbar(ctk.CTkFrame):
     def open_admindash(self):
         if self._invoke_controller("show_admin_dashboard", "show_dashboard"):
             return
-
         self.controller.clear_page()
         self.controller.current_page = Admindash.admindashboard(self.controller)
         self.controller.current_page.grid(row=0, column=0, sticky="nsew")
@@ -369,27 +169,21 @@ class navbar(ctk.CTkFrame):
         self.controller.clear_page()
         self.controller.current_page = managerreportView.ReportsView(self.controller, self.controller)
         self.controller.current_page.grid(row=0, column=0, sticky="nsew")
-    
+
     def open_financeReports(self):
         self.controller.clear_page()
         self.controller.current_page = financereportView.ReportsView(self.controller, self.controller)
         self.controller.current_page.grid(row=0, column=0, sticky="nsew")
-    
+
     def open_maintReports(self):
         self.controller.clear_page()
         self.controller.current_page = maintreportView.ReportsView(self.controller, self.controller)
         self.controller.current_page.grid(row=0, column=0, sticky="nsew")
 
     def open_maintdash(self):
-        if self._invoke_controller(
-            "open_maintenance_dashboard",
-            "show_maintenance_dashboard",
-        ):
+        if self._invoke_controller("open_maintenance_dashboard", "show_maintenance_dashboard"):
             return
-
         self.controller.clear_page()
-        
-
         self.controller.current_page = page_mdash.DashboardPage(self.controller)
         self.controller.current_page.grid(row=0, column=0, sticky="nsew")
 
@@ -399,13 +193,13 @@ class navbar(ctk.CTkFrame):
         self.controller.current_page.grid(row=0, column=0, sticky="nsew")
 
     def open_payments(self):
+        from gui.payment_page import PaymentPage
         self.controller.clear_page()
         self.controller.current_page = PaymentPage(self.controller, self.controller)
         self.controller.current_page.grid(row=0, column=0, sticky="nsew")
 
     def open_frontdash(self):
         from .updatedfrontdesk import FrontDeskGUI
-
         self.controller.clear_page()
         self.controller.current_page = FrontDeskGUI(self.controller, self.controller)
         self.controller.current_page.grid(row=0, column=0, sticky="nsew")
@@ -413,35 +207,26 @@ class navbar(ctk.CTkFrame):
     def open_settings(self):
         if self._invoke_controller("show_settings", "open_settings"):
             return
-
         self.controller.clear_page()
         self.controller.current_page = settings.settings(self.controller)
         self.controller.current_page.grid(row=0, column=0, sticky="nsew")
 
     def open_assign_apartment(self):
         from .page_assign_apartment import AssignApartmentPage
-
         self.controller.clear_page()
         self.controller.current_page = AssignApartmentPage(self.controller, self.controller, self.model)
         self.controller.current_page.grid(row=0, column=0, sticky="nsew")
 
     def open_repairs(self):
-        self._invoke_controller(
-            "show_repairs",
-            "open_repairs",
-            "open_repairs_page",
-        )
+        self._invoke_controller("show_repairs", "open_repairs", "open_repairs_page")
 
     def open_complaints(self):
-        self._invoke_controller(
-            "show_complaints",
-            "open_complaints",
-            "open_complaints_page",
-        )
+        self._invoke_controller("show_complaints", "open_complaints", "open_complaints_page")
 
     def logoutbtn(self):
         if self._invoke_controller("logout", "show_login"):
             return
-
         messagebox.showinfo("Logout", "Logout action is not available yet.")
-
+       
+       
+         
