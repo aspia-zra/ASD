@@ -1,25 +1,52 @@
 from tkinter import *
 import customtkinter as ctk
-from . import NavBar
-from Models import user_session
-from Models.settingBE import changeEmail, changePhone, changePassword, changeFontsize
+from . import nav
+from . import theme
+from models import user_session
+from models.settingBE import changeEmail, changePhone, changePassword, changeFontsize
 
 class settings(ctk.CTkFrame):
-    def __init__(self, main):
-        super().__init__(main)
+    def __init__(self, parent):
+        super().__init__(parent, fg_color=theme.BACKGROUND)
 
-        self.main = main
         self.grid(row=0, column=0, sticky="nsew")
 
-        self.nav = NavBar.navbar(self, self.main)
+        self.nav = nav.navbar(self, parent, mode=user_session.user_type.lower())
         self.nav.grid(row=0, column=0, sticky="ns")
 
         self.grid_columnconfigure(1, weight = 1)
         self.grid_rowconfigure(0, weight = 1)
 
+        self._result_after_id = None
+
         self.createSettings()
 
+    def _clear_result_label(self, result_label):
+        if self.winfo_exists() and result_label.winfo_exists():
+            result_label.config(text="")
+        self._result_after_id = None
+
+    def _schedule_result_clear(self, result_label):
+        if self._result_after_id is not None:
+            try:
+                self.after_cancel(self._result_after_id)
+            except Exception:
+                pass
+        self._result_after_id = self.after(3000, lambda: self._clear_result_label(result_label))
+
+    def destroy(self):
+        if self._result_after_id is not None:
+            try:
+                self.after_cancel(self._result_after_id)
+            except Exception:
+                pass
+            self._result_after_id = None
+        super().destroy()
+
     def createSettings(self):
+
+        current_phone = user_session.current_phone or "Not set"
+        current_email = user_session.current_email or "Not set"
 
         self.container = Frame(self, bg="#f5f5f5")
         self.container.grid(row=0, column=1, sticky="nsew", padx=20, pady=20)
@@ -32,7 +59,7 @@ class settings(ctk.CTkFrame):
         titleFrame = Frame(self.container)
         titleFrame.grid(row = 0, column=0, columnspan = 2, pady = 20,)
 
-        titlelabel = Label(titleFrame, text="Settings", font=("Arial", 50, "bold"), bg = NavBar.BG_COLOR)
+        titlelabel = Label(titleFrame, text="Settings", font=("Arial", 50, "bold"))
         titlelabel.grid(row= 0, column = 0,pady=20)
 
         #### LEFT SIDE
@@ -40,7 +67,7 @@ class settings(ctk.CTkFrame):
         phoneFrame = Frame(self.container)
         phoneFrame.grid(row = 1, column = 0, pady = 20)
 
-        phoneNumber = Label(phoneFrame, text="Current Number: " + user_session.current_phone)
+        phoneNumber = Label(phoneFrame, text="Current Number: " + current_phone)
         phoneNumber.grid(row = 0, column = 0, pady=10)
         
         changePhoneNumber = Label(phoneFrame, text="Change Phone Number:")
@@ -54,11 +81,11 @@ class settings(ctk.CTkFrame):
             result_label.config(text=msg, fg="green" if "update" in msg else "red")
 
             if "updated" in msg:
-                phoneNumber.config(text="Current Number: " + user_session.current_phone)
+                phoneNumber.config(text="Current Number: " + (user_session.current_phone or "Not set"))
             elif "Must" in msg or "already" in msg:
-                phoneNumber.config(text="Current Number: " + user_session.current_phone)
+                phoneNumber.config(text="Current Number: " + (user_session.current_phone or "Not set"))
             
-            result_label.after(3000, lambda: result_label.config(text=""))
+            self._schedule_result_clear(result_label)
         
         submitphone = Button(phoneFrame, text="Update Phone", command=submit_phone)
         submitphone.grid(row = 3, column = 0,pady=10)
@@ -68,7 +95,7 @@ class settings(ctk.CTkFrame):
         emailFrame = Frame(self.container)
         emailFrame.grid(row= 2, column=0, padx=20, pady=20)
 
-        email = Label(emailFrame, text="Current Email: " + user_session.current_email)
+        email = Label(emailFrame, text="Current Email: " + current_email)
         email.grid(row=0, column=0,pady=10)
 
         emailLabel = Label(emailFrame, text="Change Email:")
@@ -82,11 +109,11 @@ class settings(ctk.CTkFrame):
             result_label.config(text=msg, fg="green" if "update" in msg else "red")
 
             if "updated" in msg:
-                email.config(text="Current Email: " + user_session.current_email)
+                email.config(text="Current Email: " + (user_session.current_email or "Not set"))
             elif "Must" in msg or "already" in msg:
-                email.config(text="Current Email: " + user_session.current_email)
+                email.config(text="Current Email: " + (user_session.current_email or "Not set"))
             
-            result_label.after(3000, lambda: result_label.config(text=""))
+            self._schedule_result_clear(result_label)
 
         submitemail = Button(emailFrame, text="Update Email", command = submit_email)
         submitemail.grid(row=3, column=0, pady=10)
@@ -118,7 +145,7 @@ class settings(ctk.CTkFrame):
                 passwordEntry.delete(0, END)
                 currentpasswordEntry.delete(0, END)
             
-            result_label.after(3000, lambda: result_label.config(text=""))
+            self._schedule_result_clear(result_label)
         
         submitpassword = Button(passwordFrame, text="Update Password", command=submit_password)
         submitpassword.grid(row= 2, column=1,pady=10)
@@ -159,10 +186,11 @@ class settings(ctk.CTkFrame):
             
                 changefontsizeEntry.delete(0, END)
 
-            result_label.after(3000, lambda: result_label.config(text=""))
+            self._schedule_result_clear(result_label)
 
         submitfontsize = Button(fontsizeframe, text="Update Font Size", command = submit_fontsize)
         submitfontsize.grid(row=3, column=1,pady=10)
 
         result_label = Label(titleFrame, text="")
         result_label.grid(row=1, column=0, columnspan=2, pady=10)
+
