@@ -33,3 +33,7 @@ class UserTbl:
         except Exception as e:
             print("Login error:", e)
             return None
+    
+    def logout():
+        user_sessions.logged_in = False
+        user_sessions.current_user_id = None
