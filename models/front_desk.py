@@ -71,7 +71,7 @@ class FrontDesk:
         conn.commit()
         cursor.close()
         conn.close()
-
+    
     def assign_apartment(self, tenant_id, apartment_id, depositAmount, duration):
         conn = get_connection()
         cursor = conn.cursor()

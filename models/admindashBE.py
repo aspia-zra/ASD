@@ -47,7 +47,7 @@ class adminBE():# values = ["All Roles", "Front-desk Staff", "Maintenance", "Fin
         cursor.close()
         conn.close()
     
-    def getAptData(): 
+    def getAvailableApartments(): 
         # tableColumns = ("Apartment", "City", "Tenant", "Lease Start", "Lease End", "Rent", "Status")
         conn = db.getconnection()
         cursor = conn.cursor()

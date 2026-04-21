@@ -36,7 +36,7 @@ class mngdashboard(ctk.CTkFrame):
         if len(apt_number) < 1:
             return False, "Apartment number is required"
 
-        existing_numbers = {str(row[0]).strip() for row in mngBE.getAptData()}
+        existing_numbers = {str(row[0]).strip() for row in mngBE.getAvailableApartments()}
         if apt_number in existing_numbers:
             return False, "Please input an apartment number that is not already taken"
 
@@ -115,10 +115,10 @@ class mngdashboard(ctk.CTkFrame):
             command=self.toggle_add_apartment,
         ).grid(row=0, column=3, padx=5)
 
-        self.addAptForm = ctk.CTkFrame(card, fg_color=theme.BACKGROUND, corner_radius=10)
+        self.addApartmentForm = ctk.CTkFrame(card, fg_color=theme.BACKGROUND, corner_radius=10)
 
         self.apt_number_entry = ctk.CTkEntry(
-            self.addAptForm,
+            self.addApartmentForm,
             placeholder_text="Apartment Number",
             font=theme.HEADING_FONT,
             fg_color=theme.SURFACE,
@@ -128,7 +128,7 @@ class mngdashboard(ctk.CTkFrame):
         self.apt_number_entry.grid(row=0, column=0, padx=5, pady=5)
 
         self.city_entry = ctk.CTkEntry(
-            self.addAptForm,
+            self.addApartmentForm,
             placeholder_text="City",
             font=theme.BODY_FONT,
             fg_color=theme.SURFACE,
@@ -138,7 +138,7 @@ class mngdashboard(ctk.CTkFrame):
         self.city_entry.grid(row=0, column=1, padx=5, pady=5)
 
         self.rent_entry = ctk.CTkEntry(
-            self.addAptForm,
+            self.addApartmentForm,
             placeholder_text="Rent (£)",
             font=theme.BODY_FONT,
             fg_color=theme.SURFACE,
@@ -148,7 +148,7 @@ class mngdashboard(ctk.CTkFrame):
         self.rent_entry.grid(row=1, column=0, padx=5, pady=5)
 
         self.status_combo = ctk.CTkComboBox(
-            self.addAptForm,
+            self.addApartmentForm,
             values=["Available", "Occupied"],
             font=theme.BODY_FONT,
             fg_color=theme.SURFACE,
@@ -162,7 +162,7 @@ class mngdashboard(ctk.CTkFrame):
         self.status_combo.grid(row=1, column=1, padx=5, pady=5)
 
         self.submit_button = ctk.CTkButton(
-            self.addAptForm,
+            self.addApartmentForm,
             text="Submit",
             font=theme.BODY_FONT,
             fg_color=theme.PRIMARY,
@@ -172,7 +172,7 @@ class mngdashboard(ctk.CTkFrame):
         )
         self.submit_button.grid(row=3, column=0, columnspan=2, pady=10)
 
-        self.addAptForm.pack_forget()
+        self.addApartmentForm.pack_forget()
 
         tableColumns = ("Apartment no.", "City", "Monthly Rent", "Status", "Lease End")
         self._configure_table_style()
@@ -194,10 +194,10 @@ class mngdashboard(ctk.CTkFrame):
         self.load_table_data()
 
     def toggle_add_apartment(self):
-        if self.addAptForm.winfo_ismapped():
-            self.addAptForm.pack_forget()
+        if self.addApartmentForm.winfo_ismapped():
+            self.addApartmentForm.pack_forget()
         else:
-            self.addAptForm.pack(fill="x", padx=15, pady=10)
+            self.addApartmentForm.pack(fill="x", padx=15, pady=10)
 
     def submit_apartment(self):
         apt_number = self.apt_number_entry.get().strip()
@@ -213,7 +213,7 @@ class mngdashboard(ctk.CTkFrame):
             return
 
         try:
-            mngBE.addApt(
+            mngBE.addApartment(
                 apartmentNumber=apt_number,
                 monthlyRent=int(monthly_rent),
                 status=status,
@@ -239,7 +239,7 @@ class mngdashboard(ctk.CTkFrame):
         for row in self.aptTable.get_children():
             self.aptTable.delete(row)
 
-        data = mngBE.getAptData()
+        data = mngBE.getAvailableApartments()
         for row in data:
             self.aptTable.insert("", "end", values=(row[0], row[1], row[2], row[3], row[4]))
 

@@ -6,7 +6,7 @@ import mysql.connector
 
 class mngBE():# values = ["All Roles", "Front-desk Staff", "Maintenance", "Finance"]
     @staticmethod
-    def getAptData(): 
+    def getAvailableApartments(): 
     
         # tableColumns = ("Apartment", "City", "Lease End", "Rent", "Status")
         conn = db.getconnection()
@@ -32,7 +32,7 @@ class mngBE():# values = ["All Roles", "Front-desk Staff", "Maintenance", "Finan
 
         return data # back to FE table
     @staticmethod
-    def addApt(apartmentNumber, monthlyRent, status, city, aptType=None, address="TBD"):
+    def addApartment(apartmentNumber, monthlyRent, status, city, aptType=None, address="TBD"):
         conn = db.getconnection()
         cursor = conn.cursor()
         try:

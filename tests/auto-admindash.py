@@ -57,8 +57,8 @@ class TestAdminBEIntegration(unittest.TestCase):
         cursor.close()
         conn.close()
 
-    def testGetAptData(self):
-        result = adminBE.getAptData()
+    def testgetAvailableApartments(self):
+        result = adminBE.getAvailableApartments()
         self.assertIsInstance(result, list)
         self.assertGreater(len(result), 0)
 

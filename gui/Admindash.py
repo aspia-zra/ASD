@@ -258,7 +258,7 @@ class admindashboard(ctk.CTkFrame):
             self.aptTable.column(column, anchor="center", width=120)
         self.aptTable.pack(fill="both", expand=True, padx=15, pady=10)
 
-        aptData = adminBE.getAptData()
+        aptData = adminBE.getAvailableApartments()
 
         for apt in aptData:
             aptNumber, City, Tenant, startDate, endDate, Rent, Status = apt
@@ -592,7 +592,7 @@ class admindashboard(ctk.CTkFrame):
     def aptFilters(self, cityFilter, statusFilter):
         term = self.searchApt.get().strip()
 
-        apts = adminBE.getAptData()
+        apts = adminBE.getAvailableApartments()
         found = []
 
         for apt in apts:
