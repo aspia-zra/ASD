@@ -71,25 +71,43 @@ class FrontDesk:
         conn.commit()
         cursor.close()
         conn.close()
-    
+
     def assign_apartment(self, tenant_id, apartment_id, depositAmount, duration):
         conn = get_connection()
         cursor = conn.cursor()
 
-        startDate = date.today()
-        endDate = startDate + relativedelta(years=duration)
-        
-        cursor.execute(""" INSERT INTO LeaseAgreement (tenantID, apartmentID, 
-                startDate, endDate, depositAmount, Status) 
-                VALUES (%s, %s, %s, %s, %s, %s)""",
-            (tenant_id, apartment_id, startDate, endDate, depositAmount, 'active'))
-        
-        cursor.execute(""" UPDATE Apartment SET Status = 'occupied' 
-        WHERE apartmentID = %s """, (apartment_id,))
-        conn.commit()
-
+        if self.isAvailable(apartment_id):
+            startDate = date.today()
+            endDate = startDate + relativedelta(years=duration)
+            
+            cursor.execute(""" INSERT INTO LeaseAgreement (tenantID, apartmentID, 
+                    startDate, endDate, depositAmount, Status) 
+                    VALUES (%s, %s, %s, %s, %s, %s)""",
+                (tenant_id, apartment_id, startDate, endDate, depositAmount, 'active'))
+            self.updateStatus(cursor, apartment_id)
+            conn.commit()
+        else:
+            print("Apartment not available")
         cursor.close()
         conn.close()
+
+    def updateStatus(self, cursor, apartment_id):
+        cursor.execute(""" UPDATE Apartment SET Status = 'occupied' 
+            WHERE apartmentID = %s """, (apartment_id,))
+        
+    def isAvailable(self, apartment_id):
+        conn = get_connection()
+        cursor = conn.cursor()
+        active = False
+        cursor.execute(""" SELECT Status FROM Apartment
+            WHERE apartmentID = %s """, (apartment_id,))
+        result = cursor.fetchone()[0]
+        if (result == 'available'):
+            active = True
+        conn.commit()
+        cursor.close()
+        conn.close()
+        return active
 
     def delete_user(self, tenantID):
         conn = get_connection()
