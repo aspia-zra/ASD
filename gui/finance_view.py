@@ -3,7 +3,6 @@ from tkinter import ttk
 from gui import theme
 from models.finance_model import FinanceModel
 import gui.nav as nav
-from gui.payment_page import PaymentPage
 from models import user_session
 from . import theme 
 
@@ -20,8 +19,6 @@ class FinanceView(ctk.CTkFrame):
         self.grid_rowconfigure(1, weight=1)
 
         self.nav = nav.navbar(self, parent, mode=user_session.user_type.lower())
-        self.nav.grid(row=0, rowspan=2, column=0, sticky="ns")
-
         self.nav.grid(row=0, rowspan=2, column=0, sticky="ns")
 
         self._build_header()
@@ -135,30 +132,16 @@ class FinanceView(ctk.CTkFrame):
         sb.pack(side="right", fill="y", pady=(0, 16), padx=(0, 8))
 
     def QuickActions(self):
-
-        card = ctk.CTkFrame(
-            self.scroll,
-            fg_color=theme.SURFACE,
-            corner_radius=12
-        )
-        card.grid(row=5, column = 0, sticky='ew', pady=10)
-
-        ctk.CTkLabel(
-            card,
-            text = "Quick Actions",
-            font= theme.HEADING_FONT,
-            text_color=theme.PRIMARY
-        ).pack(anchor="w", padx=15,pady=(15,10))
-
+        card = ctk.CTkFrame(self.scroll, fg_color=theme.SURFACE, corner_radius=12)
+        card.grid(row=5, column=0, sticky='ew', pady=10)
+        ctk.CTkLabel(card, text="Quick Actions",
+                     font=theme.HEADING_FONT,
+                     text_color=theme.PRIMARY).pack(anchor="w", padx=15, pady=(15, 10))
         btnFrame = ctk.CTkFrame(card, fg_color="transparent")
         btnFrame.pack(padx=15, pady=10)
-
-        ctk.CTkButton(
-            btnFrame,
-            text = "Paymemts",
-            fg_color=theme.PRIMARY,
-            command = self.open_payments
-        ).grid(row=0,column=2,padx=10)
+        ctk.CTkButton(btnFrame, text="Payments",
+                      fg_color=theme.PRIMARY,
+                      command=self.open_payments).grid(row=0, column=2, padx=10)
 
     def refresh(self):
         try:
@@ -201,8 +184,10 @@ class FinanceView(ctk.CTkFrame):
                                   values=(t["invoice"], t["tenant"], t["apt"],
                                           t["amount"], t["due"], t["status"]),
                                   tags=(tag,))
-            
+
     def open_payments(self):
+        from gui.payment_page import PaymentPage
         self.app_controller.clear_page()
         self.app_controller.current_page = PaymentPage(self.app_controller, self.app_controller)
         self.app_controller.current_page.grid(row=0, column=0, sticky="nsew")
+                    
