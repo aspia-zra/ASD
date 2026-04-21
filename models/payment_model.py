@@ -1,4 +1,4 @@
-   from db.db import get_connection
+from db.db import get_connection
 
 class PaymentModel:
 
