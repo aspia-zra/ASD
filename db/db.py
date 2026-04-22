@@ -1,3 +1,4 @@
+#Imaan Mohamed - 23015907 
 import mysql.connector
 
 def get_connection():

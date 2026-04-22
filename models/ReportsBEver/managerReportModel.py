@@ -1,3 +1,4 @@
+#Mercy Lang’At -24050109 
 from db import db
 
 class ReportModel:

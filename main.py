@@ -1,3 +1,4 @@
+#Rodha A Ali - 24023498 
 import customtkinter as ctk
 from gui.loginpage import LoginPage
 from gui.finance_view import FinanceView
