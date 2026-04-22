@@ -8,7 +8,8 @@ Credits to:
 - Rodha A Ali
 - Mercy Lang'At
 
-Requirements to run:
+Check the requirements.txt file to run.
+
 # Installation Guide:
 ## Venv setup:
 #### For compatibility, running on python 3.10 is recommended.
