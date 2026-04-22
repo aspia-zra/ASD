@@ -9,6 +9,7 @@ Credits to:
 - Mercy Lang'At
 
 Check the requirements.txt file to run.
+For login credentials please check logincredentials.txt
 
 # Installation Guide:
 ## Venv setup:
