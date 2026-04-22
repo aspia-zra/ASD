@@ -1,0 +1,73 @@
+## Advanced Software Development – University Group Project
+
+This project is an apartment management application developed using **Python** and **Tkinter**.
+
+### Team Members
+
+* Imaan Mohamed
+* Azra Rahman
+* Rodha A Ali
+* Mercy Lang'At
+
+---
+
+## Getting Started
+
+### Requirements
+
+For best compatibility, use **Python 3.10**.
+
+### 1. Set Up Virtual Environment
+
+```bash
+python3.10 -m venv venv310
+```
+
+### 2. Activate Virtual Environment
+
+```bash
+source venv310/bin/activate
+```
+
+---
+
+## Install Dependencies
+
+Install the required libraries using pip:
+
+```bash
+pip install bcrypt
+pip install mysql-connector-python
+pip install matplotlib
+pip install customtkinter
+```
+
+### Built-in Libraries Used
+
+The following Python libraries are used and come pre-installed:
+
+* tkinter
+* re
+* os
+* time
+* datetime
+* smtplib
+* email
+* unittest
+
+---
+
+## Running the Application
+
+```bash
+python main.py
+```
+
+---
+
+## Additional Information
+
+* Refer to `requirements.txt` for full dependency details.
+* Login credentials can be found in `loginCredentials.txt`.
+
+
