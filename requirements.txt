@@ -2,12 +2,4 @@ bcrypt
 mysql-connector-python
 matplotlib
 customtkinter
-tkinter
-re
-os
-time
-datetime
-smtplib
-email
-unittest
-
+python3
