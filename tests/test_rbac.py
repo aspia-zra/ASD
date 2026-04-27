@@ -31,9 +31,9 @@ class test_rbac(unittest.TestCase):
         model = mngBE()
         try:
             model.addApt("A999", 1200, "Available", "London", "2BR")
-            self.assertTrue(True)
+            self.assertTrue(True) 
         except ValueError:
-            self.skipTest("Apartment number already exists")
+            self.skipTest("Apartment number already exists") #if apt exists, skip the test
         except Exception as e:
             self.fail(f"Add apartment failed: {e}")
                       
@@ -46,15 +46,15 @@ class test_rbac(unittest.TestCase):
         except:
             self.assertTrue(True)
     
-    def test_valid_assign_apt(self):
+    def test_valid_assign_apt(self): #tests database
         user_session.user_type = "frontdesk"
         model = FrontDesk()
         conn = db.get_connection()
         cursor = conn.cursor()
         cursor.execute("SELECT tenantID FROM Tenant LIMIT 1")
-        tenant = cursor.fetchone()
+        tenant = cursor.fetchone() #fetches a tenant
         cursor.execute("SELECT apartmentID FROM Apartment WHERE status='available' LIMIT 1")
-        apartment = cursor.fetchone()
+        apartment = cursor.fetchone() #fetches an apt
         cursor.close()
         conn.close()
         

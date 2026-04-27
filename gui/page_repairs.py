@@ -190,15 +190,15 @@ class RepairsPage(ctk.CTkFrame):
         button_frame = ctk.CTkFrame(self.container, fg_color="transparent")
         button_frame.grid(row=2, column=0, pady=20)
 
-        ctk.CTkButton(
-            button_frame,
-            text="Get Cost",
-            fg_color=theme.INFO,
-            hover_color=theme.PRIMARY_DARK,
-            text_color=theme.SURFACE,
-            height=45,
-            command=self.display_cost
-        ).grid(row=0, column=0, padx=20)
+        # ctk.CTkButton(
+        #     button_frame,
+        #     text="Get Cost",
+        #     fg_color=theme.INFO,
+        #     hover_color=theme.PRIMARY_DARK,
+        #     text_color=theme.SURFACE,
+        #     height=45,
+        #     command=self.display_cost
+        # ).grid(row=0, column=0, padx=20)
 
         ctk.CTkButton(
             button_frame,

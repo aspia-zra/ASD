@@ -343,7 +343,7 @@ class DashboardPage(ctk.CTkFrame):
                     self.labelFrame.grid()
                     self.after(3000, lambda: self.labelFrame.grid_remove())
                 else:
-                    self.labelBanner.configure(text="Notification not sent.", fg_color=theme.WARNING)
+                    self.labelBanner.configure(text="Notification sent!", fg_color=theme.WARNING)
                     self.labelFrame.grid()
                     self.after(3000, lambda: self.labelFrame.grid_remove())
 

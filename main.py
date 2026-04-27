@@ -20,12 +20,12 @@ class App(ctk.CTk):
         self.geometry("1200x700")
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure(0, weight=1)
-        self.current_page = None
+        self.current_page = None 
         self.app_controller = self
-        self.navbar_mode = ""
-        self._install_bgerror_filter()
-        self.protocol("WM_DELETE_WINDOW", self._on_close)
-        self.show_login()
+        self.navbar_mode = "" # tracks mode
+        self._install_bgerror_filter() #silences console errors
+        self.protocol("WM_DELETE_WINDOW", self._on_close) # destroys current page safely, closing the app
+        self.show_login() # starts at login page
 
     def _install_bgerror_filter(self):
         self.tk.eval("""
@@ -46,17 +46,17 @@ proc bgerror {msg} {
             pass
         self.destroy()
 
-    def clear_page(self):
+    def clear_page(self): #used before switching pages
         if self.current_page is not None:
             self.current_page.destroy()
 
     def show_login(self):
-        self.navbar_mode = ""
+        self.navbar_mode = "" #resets nav
         self.clear_page()
-        self.current_page = LoginPage(self, self.show_dashboard)
+        self.current_page = LoginPage(self, self.show_dashboard) #after login, it routes user
         self.current_page.grid(row=0, column=0, sticky="nsew")
 
-    def show_dashboard(self, user=None):
+    def show_dashboard(self, user=None): #rbac controller
         role = user_session.user_type
         if role == "" and isinstance(user, dict):
             role = user.get("Role", "")
@@ -64,8 +64,8 @@ proc bgerror {msg} {
         if role == "admin":
             self.navbar_mode = "admin"
             self.clear_page()
-            self.current_page = admindashboard(self)
-            self.current_page.grid(row=0, column=0, sticky="nsew")
+            self.current_page = admindashboard(self) #from views folder
+            self.current_page.grid(row=0, column=0, sticky="nsew") #fills north east etc
         elif role == "manager":
             self.navbar_mode = "manager"
             self.clear_page()
